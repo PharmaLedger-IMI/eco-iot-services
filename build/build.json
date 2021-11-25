@@ -1,6 +1,6 @@
 {
   "commonServices": {
-    "deps": "eco-iot-services",
+    "deps": "common-services",
     "autoLoad": true
   }
 }

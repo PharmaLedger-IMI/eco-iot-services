@@ -8,7 +8,7 @@
   },
   "author": "",
   "license": "MIT",
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/PharmaLedger-IMI/eco-iot-services.git"
   },

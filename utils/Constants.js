@@ -80,7 +80,10 @@ const ECO_STATUSES = {
 }
 
 const NOTIFICATIONS_TYPE = {
-
+    NEW_TRIAL:"New Trial",
+    NEW_VISIT:"New Visit",
+    VISIT_SCHEDULED:"New visit was scheduled",
+    VISIT_UPDATE:"Visit was updated",
     TRIAL_UPDATES: 'Trial Updates',
     WITHDRAWS: 'Withdraws',
     CONSENT_UPDATES: 'Consent Updates',

@@ -1,5 +1,6 @@
 module.exports = {
     CommunicationService: require("./services/CommunicationService"),
+    CommunicationServiceNew: require("./services/CommunicationServiceNew"),
     DateTimeService: require("./services/DateTimeService"),
     DIDService: require("./services/DIDService"),
     DSUService: require("./services/DSUService"),

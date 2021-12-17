@@ -42,10 +42,13 @@ class CommunicationServiceNew {
         const identifier = `did:${didType}:${this.domain}:${publicName}`;
         try {
             const receiverDidDocument = await $$.promisify(w3cDID.resolveDID)(identifier);
-            this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
-                if (err) {
-                    throw err;
-                }
+            const sc = scAPI.getSecurityContext();
+            sc.on("initialised", async () => {
+                this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                });
             });
         } catch (e) {
             console.log("[ERROR]");

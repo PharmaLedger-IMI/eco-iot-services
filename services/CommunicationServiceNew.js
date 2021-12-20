@@ -15,19 +15,44 @@ class CommunicationServiceNew {
         this.domain = "default";
         this.publicName = publicName;
 
-        const sc = scAPI.getSecurityContext();
-        sc.on("initialised", async () => {
-            await this.createIdentity();
-        });
+        this.createOrLoadIdentity();
     }
 
-    async createIdentity() {
+    createOrLoadIdentity() {
         try {
-            this.didDocument = await $$.promisify(w3cDID.createIdentity)(this.didType, this.domain, this.publicName);
-            console.log(`Identity ${this.didDocument.getIdentifier()} created successfully.`);
+            const sc = scAPI.getSecurityContext();
+            sc.on("initialised", async () => {
+                this.didDocument = await this.getDidDocumentInstance(this.didType, this.publicName);
+            });
         } catch (e) {
             console.log("[ERROR]");
             console.error(e);
+        }
+    }
+
+    async getDidDocumentInstance(didType, publicName) {
+        try {
+            const didDocument = await this.resolveDidDocument(didType, publicName);
+            console.log(`Identity ${didDocument.getIdentifier()} loaded successfully.`);
+            return didDocument
+        } catch (e) {
+            console.log(e);
+            try {
+                const didDocument = await $$.promisify(w3cDID.createIdentity)(didType, this.domain, publicName);
+                console.log(`Identity ${didDocument.getIdentifier()} created successfully.`);
+                return didDocument;
+            } catch (e) {
+                throw e;
+            }
+        }
+    }
+
+    async resolveDidDocument(didType, publicName) {
+        try {
+            const identifier = `did:${didType}:${this.domain}:${publicName}`;
+            return await $$.promisify(w3cDID.resolveDID)(identifier);
+        } catch (e) {
+            throw e;
         }
     }
 
@@ -39,16 +64,12 @@ class CommunicationServiceNew {
         }
 
         const {didType, publicName} = receiver;
-        const identifier = `did:${didType}:${this.domain}:${publicName}`;
         try {
-            const receiverDidDocument = await $$.promisify(w3cDID.resolveDID)(identifier);
-            const sc = scAPI.getSecurityContext();
-            sc.on("initialised", async () => {
-                this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
-                    if (err) {
-                        throw err;
-                    }
-                });
+            const receiverDidDocument = await this.resolveDidDocument(didType, publicName);
+            this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
+                if (err) {
+                    throw err;
+                }
             });
         } catch (e) {
             console.log("[ERROR]");

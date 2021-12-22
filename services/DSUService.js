@@ -292,6 +292,16 @@ class DSUService {
         });
     }
 
+    writeFile(path, filebuffer, callback) {
+        [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
+        this.DSUStorage.writeFile(path, filebuffer, (err, data) => {
+            if (err) {
+                return callback(err, undefined);
+            }
+            return callback(null, data);
+        });
+    }
+
     async readFileAsync(path) {
         return this.asyncMyFunction(this.readFile, [...arguments]);
     }

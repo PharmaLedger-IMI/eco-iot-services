@@ -2,7 +2,9 @@ const  fetch  = require("../utils/fetch");
 
 class ProfileService {
 
-	constructor() {}
+	constructor() {
+		this.did = null;
+	}
 
 	getUserDetails(callback) {
 		fetch('/api-standard/user-details')
@@ -18,11 +20,15 @@ class ProfileService {
 
 	async getDID(){
 		return new Promise((resolve, reject) => {
+			if(this.did){
+				return resolve(this.did);
+			}
 			this.getUserDetails((err, userDetails)=>{
 				if(err){
 					return reject(err);
 				}
 				const did = `ssi:name:${userDetails.username}`
+				this.did = did;
 				resolve(did);
 			})
 		});

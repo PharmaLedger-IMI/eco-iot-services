@@ -1,6 +1,7 @@
 module.exports = {
     ProfileService:require("./services/ProfileService"),
     CommunicationService: require("./services/CommunicationService"),
+    MessageHandlerService: require("./services/MessageHandlerService"),
     DateTimeService: require("./services/DateTimeService"),
     DSUService: require("./services/DSUService"),
     SharedStorage: require("./services/SharedStorage"),

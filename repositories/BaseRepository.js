@@ -1,4 +1,4 @@
-const getSharedStorage = require('../services/SharedStorage.js');
+const {getSharedStorage} = require('../services/SharedStorage.js');
 
 const TABLE_NAMES = {
     ALL: {
@@ -22,8 +22,8 @@ const TABLE_NAMES = {
 
 class BaseRepository {
 
-    constructor(tableName) {
-        this.StorageService = getSharedStorage.getInstance();
+    constructor(tableName, DSUStorage) {
+        this.StorageService = getSharedStorage(DSUStorage);
         this.tableName = tableName;
     }
 

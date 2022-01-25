@@ -1,17 +1,24 @@
 const opendsu = require("opendsu");
 const keySSISpace = opendsu.loadApi('keyssi')
-const storage = opendsu.loadApi('storage')
+const KEYSSI_FILE_PATH = 'keyssi.json';
+const SHARED_DB = 'sharedDB';
+
 
 class SharedStorage {
 
-    constructor() {
-        this.DSUStorage = storage.getDSUStorage();
-        this.getSharedSSI((err, sharedSSI) => {
-            if (err || !sharedSSI) {
-                return console.error('Database initialization failed.');
-            }
-            this.mydb = opendsu.loadApi('db').getWalletDB(sharedSSI, 'sharedDB');
-        })
+    constructor(dsuStorage) {
+            this.DSUStorage = dsuStorage;
+            this.DSUStorage.enableDirectAccess(() => {
+                this.mydb = undefined;
+                this.getSharedSSI((err,sharedSSI) => {
+                    if (!err && sharedSSI) {
+                        let db = opendsu.loadAPI('db');
+                        this.mydb = db.getWalletDB(sharedSSI, SHARED_DB);
+                    } else {
+                        alert('Wrong configuration as user:' + err);
+                    }
+                });
+            });
     }
 
     filter = (tableName, query, sort, limit, callback) => this.letDatabaseInit()
@@ -98,22 +105,32 @@ class SharedStorage {
     }
 
     getSharedSSI = (callback) => {
-        const databaseSharedSSIPath = 'dbSharedSSI.json';
-        this.DSUStorage.getItem(databaseSharedSSIPath, (err, content) => {
+        this.DSUStorage.listFiles('/', (err, fileList) => {
             if (err) {
-                return this.createSharedSSI(databaseSharedSSIPath, callback);
+                return callback(err);
             }
-            let textDecoder = new TextDecoder('utf-8');
-            let fileContent = JSON.parse(textDecoder.decode(content));
-            const parsedSSI = keySSISpace.parse(fileContent.sharedSSI);
-            callback(undefined, parsedSSI);
+            if (fileList.includes(KEYSSI_FILE_PATH)) {
+                this.DSUStorage.getObject(KEYSSI_FILE_PATH, (err, data) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    const parsed = keySSISpace.parse(data.sharedSSI);
+                    callback(undefined, parsed);
+                });
+            } else {
+                return this.createSharedSSI(callback);
+            }
         });
     }
 
-    createSharedSSI = (databaseSharedSSIPath, callback) => {
+    createSharedSSI = (callback) => {
         const ssi = keySSISpace.createSeedSSI('default');
-        let sharedSSIObject = {sharedSSI: ssi.derive().getIdentifier()};
-        this.DSUStorage.setObject(databaseSharedSSIPath, sharedSSIObject, (err) => callback(err, ssi));
+        this.DSUStorage.setObject(KEYSSI_FILE_PATH, { sharedSSI: ssi.derive().getIdentifier() },(err)=>{
+            if(err){
+                return callback(err);
+            }
+            callback(undefined, ssi);
+        });
     }
 
     generateGUID = () => {
@@ -125,14 +142,17 @@ class SharedStorage {
     }
 }
 
-const getInstance = () => {
-    if (typeof window.sharedStorageInstance === "undefined") {
-        window.sharedStorageInstance = new SharedStorage()
+let instance;
+module.exports.getSharedStorage = function (dsuStorage) {
+    if (typeof instance === 'undefined') {
+        instance = new SharedStorage(dsuStorage);
+        const promisifyFns = ["addSharedFile","cancelBatch","commitBatch","filter","getRecord","getSharedSSI","insertRecord","updateRecord"]
+        for(let i = 0; i<promisifyFns.length; i++){
+            let prop = promisifyFns[i];
+            if(typeof instance[prop] ==="function"){
+                instance[prop] = $$.promisify(instance[prop].bind(instance));
+            }
+        }
     }
-    return window.sharedStorageInstance;
+    return instance;
 }
-let toBeReturnedObject = {
-    getInstance
-}
-
-module.exports = toBeReturnedObject;

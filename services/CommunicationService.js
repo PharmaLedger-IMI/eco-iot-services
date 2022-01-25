@@ -47,7 +47,6 @@ class CommunicationService {
             console.log(`Identity ${didDocument.getIdentifier()} loaded successfully.`);
             return didDocument
         } catch (e) {
-            console.log(e);
             try {
                 const didDocument = await $$.promisify(w3cDID.createIdentity)(didType, this.domain, publicName);
                 console.log(`Identity ${didDocument.getIdentifier()} created successfully.`);
@@ -81,6 +80,11 @@ class CommunicationService {
         const {didType, publicName} = receiver;
         try {
             const receiverDidDocument = await this.resolveDidDocument(didType, publicName);
+            //temporary: trust the sender that he is who pretends to be: @senderIdentity
+            data = {
+                ...data,
+                senderIdentity: await ProfileService.getProfileServiceInstance().getDID()
+            }
             this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
                 if (err) {
                     throw err;

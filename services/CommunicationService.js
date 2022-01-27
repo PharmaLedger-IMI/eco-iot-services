@@ -11,7 +11,6 @@ class CommunicationService {
      * @param publicName : String - the public name used by the sender to send a message
      */
     constructor() {
-        this.domain = "default";
         this.createOrLoadIdentity();
     }
 
@@ -25,7 +24,7 @@ class CommunicationService {
                 const sc = scAPI.getSecurityContext();
                 sc.on("initialised", async () => {
                     try {
-                        this.didDocument = await this.getDidDocumentInstance(didData.didType, didData.publicName);
+                        this.didDocument = await this.getDidDocumentInstance(didData);
                         console.log(this.didDocument);
                     }
                     catch (e){
@@ -41,26 +40,27 @@ class CommunicationService {
 
     }
 
-    async getDidDocumentInstance(didType, publicName) {
+    async getDidDocumentInstance(didData) {
         try {
-            const didDocument = await this.resolveDidDocument(didType, publicName);
+            const didDocument = await this.resolveDidDocument(didData);
             console.log(`Identity ${didDocument.getIdentifier()} loaded successfully.`);
             return didDocument
         } catch (e) {
             try {
-                const didDocument = await $$.promisify(w3cDID.createIdentity)(didType, this.domain, publicName);
+                const didDocument = await $$.promisify(w3cDID.createIdentity)(didData.didType, didData.domain, didData.publicName);
                 console.log(`Identity ${didDocument.getIdentifier()} created successfully.`);
                 return didDocument;
             } catch (e) {
-                console.log(`DID creation failed for didType:'${didType}' , publicName: '${publicName}'`)
+                console.log(`DID creation failed for didType:'${didData.didType}' , publicName: '${didData.publicName}' , domain: '${didData.domain}'`)
                 throw e;
             }
         }
     }
 
-    async resolveDidDocument(didType, publicName) {
+    async resolveDidDocument(didData) {
+        const {didType, domain, publicName} = didData;
         try {
-            const identifier = `did:${didType}:${this.domain}:${publicName}`;
+            const identifier = `did:${didType}:${domain}:${publicName}`;
             return await $$.promisify(w3cDID.resolveDID)(identifier);
         } catch (e) {
             console.log(`DID resolve failed for didType:'${didType}' , publicName: '${publicName}'`)
@@ -75,11 +75,10 @@ class CommunicationService {
             });
         }
 
-        let receiver = ProfileService.getDidData(receiverDid);
+        let receiverDidData = ProfileService.getDidData(receiverDid);
 
-        const {didType, publicName} = receiver;
         try {
-            const receiverDidDocument = await this.resolveDidDocument(didType, publicName);
+            const receiverDidDocument = await this.resolveDidDocument(receiverDidData);
             //temporary: trust the sender that he is who pretends to be: @senderIdentity
             data = {
                 ...data,

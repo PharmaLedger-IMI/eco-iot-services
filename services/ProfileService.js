@@ -1,5 +1,5 @@
 const  fetch  = require("../utils/fetch");
-
+const scAPI = require("opendsu").loadAPI("sc");
 class ProfileService {
 
 	constructor() {
@@ -18,16 +18,45 @@ class ProfileService {
 			});
 	}
 
+	async getWalletDomain(){
+		return new Promise((resolve,reject)=>{
+			scAPI.getMainDSU((err, mainDSU)=>{
+				if(err){
+					return reject(err);
+				}
+				try {
+					mainDSU.readFile("environment.json",(err, data)=>{
+						if(err){
+							return reject(err);
+						}
+						let environmentConfig = JSON.parse(data);
+						if(environmentConfig.hasOwnProperty("workspace")){
+							return resolve(environmentConfig['workspace']);
+						}
+						resolve("default");
+					})
+				}
+				catch (e){
+					return reject(e);
+				}
+
+			})
+		})
+
+	}
+
 	async getDID(){
 		return new Promise((resolve, reject) => {
 			if(this.did){
 				return resolve(this.did);
 			}
-			this.getUserDetails((err, userDetails)=>{
+			this.getUserDetails(async (err, userDetails)=>{
 				if(err){
 					return reject(err);
 				}
-				const did = `ssi:name:${userDetails.username}`
+
+				const domain = await this.getWalletDomain();
+				const did = `did:ssi:name:${domain}:${userDetails.username}`
 				this.did = did;
 				resolve(did);
 			})
@@ -37,8 +66,9 @@ class ProfileService {
 	static getDidData(didString){
 		const splitDid = didString.split(":");
 		return {
-			didType: `${splitDid[0]}:${splitDid[1]}`,
-			publicName: splitDid[2]
+			didType: `${splitDid[1]}:${splitDid[2]}`,
+			publicName: splitDid[4],
+			domain:splitDid[3]
 		};
 	}
 }

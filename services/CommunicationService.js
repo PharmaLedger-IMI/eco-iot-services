@@ -90,7 +90,7 @@ class CommunicationService {
                 }
             });
         } catch (e) {
-            console.log("[ERROR]");
+            console.log(`[ERROR] Could not send message to did '${receiverDid}'. Does it exists?`);
             console.error(e);
         }
     }

@@ -1,4 +1,7 @@
 (function () {
+    if(typeof document === "undefined"){
+        return;
+    }
     const helpButton = document.querySelector("button[data-tag=\"header:help\"]");
     const logoutButton = document.querySelector("button[data-tag=\"header:logout\"]");
     console.log("buttons", helpButton, logoutButton);

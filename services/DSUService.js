@@ -95,18 +95,25 @@ class DSUService {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
         const resolver = opendsu.loadAPI('resolver');
         const keySSISpace = opendsu.loadAPI('keyssi');
-        const templateSSI = keySSISpace.createTemplateSeedSSI('default');
-        resolver.createDSU(templateSSI, (err, dsuInstance) => {
-            if (err) {
-                return callback(err);
+        const config = opendsu.loadAPI("config");
+
+        config.getEnv("domain", (err, domain) => {
+            if(err || !domain){
+                domain = "default";
             }
-            dsuInstance.getKeySSIAsString((err, keySSI) => {
+            const templateSSI = keySSISpace.createTemplateSeedSSI(domain);
+            resolver.createDSU(templateSSI, (err, dsuInstance) => {
                 if (err) {
                     return callback(err);
                 }
-                this.letDSUStorageInit().then(() => {
-                    this.DSUStorage.mount(path + '/' + keySSI, keySSI, (err) => {
-                        callback(err, keySSI);
+                dsuInstance.getKeySSIAsString((err, keySSI) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    this.letDSUStorageInit().then(() => {
+                        this.DSUStorage.mount(path + '/' + keySSI, keySSI, (err) => {
+                            callback(err, keySSI);
+                        });
                     });
                 });
             });

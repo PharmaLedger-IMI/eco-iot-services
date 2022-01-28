@@ -18,31 +18,19 @@ class ProfileService {
 			});
 	}
 
-	async getWalletDomain(){
-		return new Promise((resolve,reject)=>{
-			scAPI.getMainDSU((err, mainDSU)=>{
-				if(err){
-					return reject(err);
-				}
-				try {
-					mainDSU.readFile("environment.json",(err, data)=>{
-						if(err){
-							return reject(err);
-						}
-						let environmentConfig = JSON.parse(data);
-						if(environmentConfig.hasOwnProperty("workspace")){
-							return resolve(environmentConfig['workspace']);
-						}
-						resolve("default");
-					})
-				}
-				catch (e){
-					return reject(e);
-				}
+	async getWalletDomain() {
 
-			})
-		})
-
+		const config = opendsu.loadAPI("config");
+		const defaultDomain = "default";
+		try {
+			let domain = await $$.promisify(config.getEnv)("domain");
+			if (!domain) {
+				domain = defaultDomain;
+			}
+			return domain;
+		} catch (e) {
+			return defaultDomain;
+		}
 	}
 
 	async getDID(){

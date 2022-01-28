@@ -1,5 +1,6 @@
+const opendsu = require("opendsu");
 const  fetch  = require("../utils/fetch");
-const scAPI = require("opendsu").loadAPI("sc");
+
 class ProfileService {
 
 	constructor() {

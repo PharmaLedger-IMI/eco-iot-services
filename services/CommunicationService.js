@@ -1,7 +1,7 @@
 const opendsu = require("opendsu");
 const w3cDID = opendsu.loadAPI('w3cdid');
 const scAPI = opendsu.loadAPI("sc");
-const ProfileService = require("./ProfileService");
+const DidService = require("./DidService");
 const messageQueueServiceInstance = require("./MessageQueueService");
 
 class CommunicationService {
@@ -16,9 +16,9 @@ class CommunicationService {
 
     createOrLoadIdentity() {
 
-        let profileService = ProfileService.getProfileServiceInstance();
-        profileService.getDID().then((did)=>{
-            const didData = ProfileService.getDidData(did);
+        let didService = DidService.getDidServiceInstance();
+        didService.getDID().then((did)=>{
+            const didData = DidService.getDidData(did);
 
             try {
                 const sc = scAPI.getSecurityContext();
@@ -75,14 +75,14 @@ class CommunicationService {
             });
         }
 
-        let receiverDidData = ProfileService.getDidData(receiverDid);
+        let receiverDidData = DidService.getDidData(receiverDid);
 
         try {
             const receiverDidDocument = await this.resolveDidDocument(receiverDidData);
             //temporary: trust the sender that he is who pretends to be: @senderIdentity
             data = {
                 ...data,
-                senderIdentity: await ProfileService.getProfileServiceInstance().getDID()
+                senderIdentity: await DidService.getDidServiceInstance().getDID()
             }
             this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
                 if (err) {

@@ -1,5 +1,5 @@
 module.exports = {
-    ProfileService:require("./services/ProfileService"),
+    DidService:require("./services/DidService"),
     CommunicationService: require("./services/CommunicationService"),
     MessageHandlerService: require("./services/MessageHandlerService"),
     DateTimeService: require("./services/DateTimeService"),

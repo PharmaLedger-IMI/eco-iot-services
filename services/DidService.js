@@ -1,13 +1,11 @@
-const opendsu = require("opendsu");
-const  fetch  = require("../utils/fetch");
-
-class ProfileService {
+class DidService {
 
 	constructor() {
 		this.did = null;
 	}
 
 	getUserDetails(callback) {
+		const  fetch  = require("../utils/fetch");
 		fetch('/api-standard/user-details')
 			.then((response) => response.json())
 			.then((userDetails) => {
@@ -20,7 +18,7 @@ class ProfileService {
 	}
 
 	async getWalletDomain() {
-
+		const opendsu = require("opendsu");
 		const config = opendsu.loadAPI("config");
 		const defaultDomain = "default";
 		try {
@@ -64,14 +62,14 @@ class ProfileService {
 
 
 let instance = null;
-const getProfileServiceInstance = () => {
+const getDidServiceInstance = () => {
 	if (instance === null) {
-		instance = new ProfileService();
+		instance = new DidService();
 	}
 	return instance;
 };
 
 module.exports = {
-	getProfileServiceInstance,
-	getDidData:ProfileService.getDidData
+	getDidServiceInstance,
+	getDidData:DidService.getDidData
 };

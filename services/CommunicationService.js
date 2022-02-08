@@ -104,9 +104,10 @@ class CommunicationService {
 
         this.didDocument.readMessage((err, decryptedMessage) => {
             if (err) {
-                console.log("[ERROR]");
-                console.error(err)
+                console.error(err);
+                return;
             }
+
             console.log("[Received Message]", decryptedMessage);
             messageQueueServiceInstance.addCallback(async () => {
                 await callback(err, decryptedMessage);

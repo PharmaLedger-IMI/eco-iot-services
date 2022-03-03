@@ -1,24 +1,18 @@
 const opendsu = require("opendsu");
 const keySSISpace = opendsu.loadApi('keyssi')
 const KEYSSI_FILE_PATH = 'keyssi.json';
-const SHARED_DB = 'sharedDB';
-
 
 class SharedStorage {
 
     constructor(dsuStorage) {
+        const scApi = opendsu.loadApi("sc");
+        scApi.getMainEnclave((err, enclaveDB) => {
+            if (err) {
+                return console.log(err);
+            }
+            this.mydb = enclaveDB;
             this.DSUStorage = dsuStorage;
-            this.DSUStorage.enableDirectAccess(() => {
-                this.mydb = undefined;
-                this.getSharedSSI((err,sharedSSI) => {
-                    if (!err && sharedSSI) {
-                        let db = opendsu.loadAPI('db');
-                        this.mydb = db.getWalletDB(sharedSSI, SHARED_DB);
-                    } else {
-                        alert('Wrong configuration as user:' + err);
-                    }
-                });
-            });
+        });
     }
 
     filter = (tableName, query, sort, limit, callback) => this.letDatabaseInit()

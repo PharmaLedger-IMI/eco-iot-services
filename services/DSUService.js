@@ -1,6 +1,7 @@
 const opendsu = require("opendsu");
 const storage = opendsu.loadApi('storage')
-
+const resolver = opendsu.loadAPI('resolver');
+const keySSISpace = opendsu.loadAPI('keyssi');
 class DSUService {
 
     PATH = "/";
@@ -122,11 +123,56 @@ class DSUService {
 
     saveEntity(entity, path, callback) {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
-        this.createDSUAndMount(path, (err, keySSI) => {
-            if (err) {
-                return callback(err);
+
+        const config = opendsu.loadAPI('config');
+
+        config.getEnv('domain', (err, domain) => {
+            if (err || !domain) {
+                domain = 'default';
             }
-            this.updateEntity(this._getEntityWithIdentifiers(entity, keySSI), path, callback);
+
+            const templateSSI = keySSISpace.createTemplateSeedSSI(domain);
+            resolver.createDSU(templateSSI, (err, dsuInstance) => {
+                if (err) {
+                    console.log(err);
+                    return callback(err);
+                }
+
+
+                dsuInstance.getKeySSIAsString((err, seedSSI) => {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    const keySSIObj = keySSISpace.parse(seedSSI);
+                    const anchorId = keySSIObj.getAnchorId();
+
+                    dsuInstance.getKeySSIAsString('sread', (err, sreadSSI) => {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        this.DSUStorage.mount(path + '/' + anchorId, seedSSI, (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            entity.uid = anchorId;
+
+                            this.updateEntity(entity, path, (err, entity) => {
+                                if (err) {
+                                    return callback(err, entity);
+                                }
+
+                                entity.keySSI = seedSSI;
+                                entity.sReadSSI = sreadSSI;
+                                callback(undefined, entity);
+                            });
+
+                        });
+                    });
+                });
+            });
+
         });
     }
 
@@ -159,14 +205,15 @@ class DSUService {
 
     mountEntity(keySSI, path, callback) {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
-        this.letDSUStorageInit().then(() => {
-            this.DSUStorage.mount(path + '/' + keySSI, keySSI, (err) => {
-                this.getEntity(keySSI, (err, entity) => {
-                    if (err) {
-                        return callback(err, undefined);
-                    }
-                    this.updateEntity(this._getEntityWithIdentifiers(entity, keySSI), path, callback);
-                })
+
+        const keySSIObj = keySSISpace.parse(keySSI);
+        const anchorId = keySSIObj.getAnchorId();
+        this.DSUStorage.mount(path + '/' + anchorId, keySSI, (err) => {
+            this.getEntity(anchorId, path, (err, entity) => {
+                if (err) {
+                    return callback(err, undefined);
+                }
+                callback(undefined, entity);
             });
         });
     }

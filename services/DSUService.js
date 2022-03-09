@@ -180,24 +180,19 @@ class DSUService {
         return this.asyncMyFunction(this.saveEntity, [...arguments])
     }
 
+
     updateEntity(entity, path, callback) {
-        [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
-        const resolver = opendsu.loadAPI('resolver');
         entity.volatile = undefined;
-        resolver.loadDSU(entity.uid,
-            //{skipCache: true},
-            (err, dsu) => {
-                if (err) {
-                    return callback(err);
-                }
-                dsu.writeFile('/data.json', JSON.stringify(entity), (err) => {
-                    if (err) {
-                        return callback(err, undefined);
-                    }
-                    callback(undefined, entity);
-                });
-            });
+        [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
+        this.DSUStorage.setObject(this._getDsuStoragePath(entity.uid, path), entity, (err) => {
+            if (err) {
+                return callback(err, undefined);
+            }
+            callback(undefined, entity);
+        });
     }
+
+
 
     async updateEntityAsync(entity, path) {
         return this.asyncMyFunction(this.updateEntity, [...arguments])

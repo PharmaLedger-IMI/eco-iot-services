@@ -151,24 +151,25 @@ class DSUService {
                         if (err) {
                             return callback(err);
                         }
-
-                        this.DSUStorage.mount(path + '/' + anchorId, seedSSI, (err) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                            entity.uid = anchorId;
-
-                            this.updateEntity(entity, path, (err, entity) => {
+                        this.letDSUStorageInit().then(() => {
+                            this.DSUStorage.mount(path + '/' + anchorId, seedSSI, (err) => {
                                 if (err) {
-                                    return callback(err, entity);
+                                    console.log(err);
                                 }
+                                entity.uid = anchorId;
 
-                                entity.keySSI = seedSSI;
-                                entity.sReadSSI = sreadSSI;
-                                callback(undefined, entity);
+                                this.updateEntity(entity, path, (err, entity) => {
+                                    if (err) {
+                                        return callback(err, entity);
+                                    }
+
+                                    entity.keySSI = seedSSI;
+                                    entity.sReadSSI = sreadSSI;
+                                    callback(undefined, entity);
+                                });
+
                             });
-
-                        });
+                        })
                     });
                 });
             });

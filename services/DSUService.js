@@ -74,17 +74,12 @@ class DSUService {
 
     getEntity(uid, path, callback) {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
-        const resolver = opendsu.loadAPI('resolver');
-        resolver.loadDSU(uid, (err, dsu) => {
+        this.DSUStorage.getItem(this._getDsuStoragePath(uid, path), (err, content) => {
             if (err) {
-                return callback(err);
+                return callback(err, undefined);
             }
-            dsu.readFile('/data.json', (err, data) => {
-                if (err) {
-                    return callback(err, undefined);
-                }
-                callback(undefined, JSON.parse(data.toString()));
-            });
+            let textDecoder = new TextDecoder('utf-8');
+            callback(undefined, JSON.parse(textDecoder.decode(content)));
         });
     }
 

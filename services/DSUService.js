@@ -329,12 +329,14 @@ class DSUService {
 
     readFile(path, callback) {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
-        this.DSUStorage.readFile(path, (err, data) => {
-            if (err) {
-                return callback(err, undefined);
-            }
-            return callback(null, data);
-        });
+        this.letDSUStorageInit().then(() => {
+            this.DSUStorage.readFile(path, (err, data) => {
+                if (err) {
+                    return callback(err, undefined);
+                }
+                return callback(null, data);
+            });
+        })
     }
 
     writeFile(path, filebuffer, callback) {

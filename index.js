@@ -11,5 +11,6 @@ module.exports = {
     FileDownloader: require("./utils/FileDownloader"),
     FileDownloaderService: require("./utils/FileDownloaderService"),
     HeaderController: require("./utils/HeaderController"),
+    EvidenceService:require("./services/iot/EvidenceService"),
     models: require("./models")
 };

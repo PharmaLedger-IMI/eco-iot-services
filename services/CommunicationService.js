@@ -3,6 +3,7 @@ const w3cDID = opendsu.loadAPI('w3cdid');
 const scAPI = opendsu.loadAPI("sc");
 const DidService = require("./DidService");
 const messageQueueServiceInstance = require("./MessageQueueService");
+const iotAdaptorIdentityEndpoint = "http://localhost:3000/iotAdapter/adaptorIdentity/"
 
 class CommunicationService {
 
@@ -25,7 +26,6 @@ class CommunicationService {
                 sc.on("initialised", async () => {
                     try {
                         this.didDocument = await this.getDidDocumentInstance(didData);
-                        console.log(this.didDocument);
                     }
                     catch (e){
                         console.log(e);
@@ -93,6 +93,19 @@ class CommunicationService {
             console.log(`[ERROR] Could not send message to did '${receiverDid}'. Does it exists?`);
             console.error(e);
         }
+    }
+
+    async sendMessageToIotAdaptor(data) {
+        return fetch(iotAdaptorIdentityEndpoint, {
+            mode: 'cors'
+        }).then(async response => {
+            response.json().then(async (didMessage) => {
+                await this.sendMessage(didMessage.message, data);
+            })
+
+        }).catch(e => {
+            console.log(e);
+        });
     }
 
     listenForMessages(callback) {

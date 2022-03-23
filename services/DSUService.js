@@ -199,14 +199,16 @@ class DSUService {
 
         const keySSIObj = keySSISpace.parse(keySSI);
         const anchorId = keySSIObj.getAnchorId();
-        this.DSUStorage.mount(path + '/' + anchorId, keySSI, (err) => {
-            this.getEntity(anchorId, path, (err, entity) => {
-                if (err) {
-                    return callback(err, undefined);
-                }
-                callback(undefined, entity);
+        this.letDSUStorageInit().then(() => {
+            this.DSUStorage.mount(path + '/' + anchorId, keySSI, (err) => {
+                this.getEntity(anchorId, path, (err, entity) => {
+                    if (err) {
+                        return callback(err, undefined);
+                    }
+                    callback(undefined, entity);
+                });
             });
-        });
+        })
     }
 
     async mountEntityAsync(keySSI, path) {
@@ -216,11 +218,13 @@ class DSUService {
     unmountEntity(uid, path, callback) {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
         let unmountPath = path + '/' + uid;
-        this.DSUStorage.unmount(unmountPath, (err, result) => {
-            if (err) {
-                return callback(err, undefined);
-            }
-            callback(undefined, result);
+        this.letDSUStorageInit().then(() => {
+            this.DSUStorage.unmount(unmountPath, (err, result) => {
+                if (err) {
+                    return callback(err, undefined);
+                }
+                callback(undefined, result);
+            });
         });
     }
 
@@ -234,13 +238,6 @@ class DSUService {
         callback(undefined, parsedSeedSSI.derive().getIdentifier());
     }
 
-    _getEntityWithIdentifiers(entity, keySSI) {
-        // TODO: Decide the name of the identifier and remove the others.
-        entity.KeySSI = keySSI;
-        entity.keySSI = keySSI;
-        entity.uid = keySSI;
-        return entity;
-    }
 
     _getDsuStoragePath(keySSI, path = this.PATH) {
         return path + '/' + keySSI + '/data.json';

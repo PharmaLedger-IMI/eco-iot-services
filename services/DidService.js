@@ -33,20 +33,35 @@ class DidService {
 	}
 
 	async getDID(){
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
 			if(this.did){
 				return resolve(this.did);
 			}
-			this.getUserDetails(async (err, userDetails)=>{
-				if(err){
-					return reject(err);
-				}
 
-				const domain = await this.getWalletDomain();
-				const did = `did:ssi:name:${domain}:${userDetails.username}`
-				this.did = did;
-				resolve(did);
-			})
+			if(typeof window !== "undefined"){
+				//in browser, e.g ssapps
+				return this.getUserDetails(async (err, userDetails)=>{
+					if(err){
+						return reject(err);
+					}
+
+					const domain = await this.getWalletDomain();
+					const did = `did:ssi:name:${domain}:${userDetails.username}`
+					this.did = did;
+					resolve(did);
+				})
+			}
+
+			const opendsu = require("opendsu");
+			const scAPI = opendsu.loadApi("sc");
+
+			const mainDSU = await $$.promisify(scAPI.getMainDSU)();
+			let environment = JSON.parse(await $$.promisify(mainDSU.readFile)("environment.json"));
+			if(!environment.hasOwnProperty("did")){
+				return reject("No did set in environment.js");
+			}
+			resolve(environment.did);
+
 		});
 	}
 

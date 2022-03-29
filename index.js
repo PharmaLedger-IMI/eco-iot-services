@@ -13,5 +13,6 @@ module.exports = {
     HeaderController: require("./utils/HeaderController"),
     EvidenceService:require("./services/iot/EvidenceService"),
     DeviceServices: require("./services/iot/DeviceServices"),
-    models: require("./models")
+    models: require("./models"),
+    getDataSourceFactory: () => require("./factories/DataSourceFactory")
 };

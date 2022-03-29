@@ -11,5 +11,6 @@ module.exports = {
     FileDownloader: require("./utils/FileDownloader"),
     FileDownloaderService: require("./utils/FileDownloaderService"),
     HeaderController: require("./utils/HeaderController"),
-    models: require("./models")
+    models: require("./models"),
+    getDataSourceFactory: () => require("./factories/DataSourceFactory")
 };

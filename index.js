@@ -1,3 +1,4 @@
+const QuestionnaireService = require("./services/iot/QuestionnaireService");
 module.exports = {
     DidService:require("./services/DidService"),
     CommunicationService: require("./services/CommunicationService"),
@@ -13,6 +14,7 @@ module.exports = {
     HeaderController: require("./utils/HeaderController"),
     EvidenceService:require("./services/iot/EvidenceService"),
     DeviceServices: require("./services/iot/DeviceServices"),
+    QuestionnaireService: require("./services/iot/QuestionnaireService"),
     models: require("./models"),
     getDataSourceFactory: () => require("./factories/DataSourceFactory")
 };

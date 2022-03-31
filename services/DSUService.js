@@ -232,7 +232,7 @@ class DSUService {
         return this.asyncMyFunction(this.unmountEntity, [...arguments])
     }
 
-    makeSSIReadOnly(seedSSI, callback) {
+    getSReadSSI(seedSSI, callback) {
         const keySSISpace = opendsu.loadAPI('keyssi');
         let parsedSeedSSI = keySSISpace.parse(seedSSI);
         callback(undefined, parsedSeedSSI.derive().getIdentifier());
@@ -351,6 +351,31 @@ class DSUService {
     async readFileAsync(path) {
         return this.asyncMyFunction(this.readFile, [...arguments]);
     }
+
+    getEntityPath(keySSI, pathPrefix, callback){
+        this.DSUStorage.listMountedDSUs(pathPrefix, (err, dsuList) => {
+            const dsu  = dsuList.find(dsu=>dsu.identifier === keySSI);
+            if(!dsu){
+                return callback(undefined, keySSI);
+            }
+            callback(undefined,dsu.path);
+        });
+    }
+
+    async getEntityPathAsync(knownIdentifier, pathPrefix){
+        return this.asyncMyFunction(this.getEntityPath, [...arguments]);
+    }
+
+    getEntityMountSSI(pathPrefix, callback){
+        this.DSUStorage.listMountedDSUs(pathPrefix, (err, dsuList) => {
+            if(err){
+                return callback(err);
+            }
+            const targetedDSU = dsuList[0];
+            return callback(undefined, targetedDSU.identifier);
+        });
+    }
+
 }
 
 module.exports = DSUService;

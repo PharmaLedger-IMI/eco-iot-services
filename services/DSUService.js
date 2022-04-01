@@ -238,6 +238,11 @@ class DSUService {
         callback(undefined, parsedSeedSSI.derive().getIdentifier());
     }
 
+    getAnchorId(ssi){
+        const keySSIObj = keySSISpace.parse(ssi);
+        return keySSIObj.getAnchorId();
+    }
+
 
     _getDsuStoragePath(keySSI, path = this.PATH) {
         return path + '/' + keySSI + '/data.json';
@@ -299,8 +304,8 @@ class DSUService {
                             }
                             if (file === "data.json") {
                                 data = JSON.parse(data.toString());
-                                data.genesisSSI = fromDSUSSI;
-                                data.uid = toDSUSSI;
+                                data.genesisUid = data.uid;
+                                data.uid = this.getAnchorId(toDSUSSI);
                                 data.KeySSI = toDSUSSI;
                                 data.keySSI = toDSUSSI;
                                 data = JSON.stringify(data);
@@ -370,6 +375,9 @@ class DSUService {
         this.DSUStorage.listMountedDSUs(pathPrefix, (err, dsuList) => {
             if(err){
                 return callback(err);
+            }
+            if(dsuList.length === 0){
+                return callback(new Error("No mounted entity found for "+pathPrefix))
             }
             const targetedDSU = dsuList[0];
             return callback(undefined, targetedDSU.identifier);

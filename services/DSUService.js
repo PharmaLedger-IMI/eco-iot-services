@@ -107,7 +107,11 @@ class DSUService {
                         return callback(err);
                     }
                     this.letDSUStorageInit().then(() => {
-                        this.DSUStorage.mount(path + '/' + keySSI, keySSI, (err) => {
+
+                        const keySSIObj = keySSISpace.parse(keySSI);
+                        const anchorId = keySSIObj.getAnchorId();
+
+                        this.DSUStorage.mount(path + '/' + anchorId, keySSI, (err) => {
                             callback(err, keySSI);
                         });
                     });

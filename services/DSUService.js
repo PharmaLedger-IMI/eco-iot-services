@@ -24,45 +24,61 @@ class DSUService {
     return this.initializationPromise;
   };
 
-  getEntities(path, callback) {
-    [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
-    const resolver = opendsu.loadAPI('resolver');
+  getFilteredEntities(path, filterPath, callback){
     this.letDSUStorageInit().then(() => {
       this.DSUStorage.listMountedDSUs(path, (err, dsuList) => {
         if (err) {
           return callback(err, undefined);
         }
-        let entities = [];
-        let getServiceDsu = (dsuItem) => {
-          let objectName = this.PATH.substring(1);
-          let itemPathSplit = dsuItem.path.split('/');
-          if (itemPathSplit.length > 1) {
-            objectName = itemPathSplit[0];
-          }
-          resolver.loadDSU(dsuItem.identifier, (err, dsu) => {
-            if (err) {
-              return callback(err);
-            }
-            dsu.readFile('/data.json', (err, content) => {
-              if (err) {
-                entities.slice(0);
-                return callback(err, undefined);
-              }
-              let entity = JSON.parse(content.toString());
-              entity.objectName = objectName;
-              entities.push(entity);
+        dsuList = dsuList.filter(dsu => dsu.path.startsWith(filterPath + "/"));
+        this.readDSUsData(dsuList, callback);
+      });
+    });
+  }
 
-              if (dsuList.length === 0) {
-                return callback(undefined, entities);
-              }
-              getServiceDsu(dsuList.shift());
-            });
-          });
-        };
-        if (dsuList.length === 0) {
-          return callback(undefined, []);
+  readDSUsData(dsuList, callback){
+    const resolver = opendsu.loadAPI('resolver');
+    let entities = [];
+    let getServiceDsu = (dsuItem) => {
+      let objectName = this.PATH.substring(1);
+      let itemPathSplit = dsuItem.path.split('/');
+      if (itemPathSplit.length > 1) {
+        objectName = itemPathSplit[0];
+      }
+      resolver.loadDSU(dsuItem.identifier, (err, dsu) => {
+        if (err) {
+          return callback(err);
         }
-        getServiceDsu(dsuList.shift());
+        dsu.readFile('/data.json', (err, content) => {
+          if (err) {
+            entities.slice(0);
+            return callback(err, undefined);
+          }
+          let entity = JSON.parse(content.toString());
+          entity.objectName = objectName;
+          entities.push(entity);
+
+          if (dsuList.length === 0) {
+            return callback(undefined, entities);
+          }
+          getServiceDsu(dsuList.shift());
+        });
+      });
+    };
+    if (dsuList.length === 0) {
+      return callback(undefined, []);
+    }
+    getServiceDsu(dsuList.shift());
+  }
+
+  getEntities(path, callback) {
+    [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
+    this.letDSUStorageInit().then(() => {
+      this.DSUStorage.listMountedDSUs(path, (err, dsuList) => {
+        if (err) {
+          return callback(err, undefined);
+        }
+        this.readDSUsData(dsuList, callback);
       });
     });
   }

@@ -5,9 +5,8 @@ const keySSISpace = opendsu.loadAPI('keyssi');
 class DSUService {
   PATH = '/';
 
-  constructor(path = this.PATH, DSUStorage) {
-    this.DSUStorage = DSUStorage;
-    // this.DSUStorage = storage.getDSUStorage();
+  constructor(path = this.PATH) {
+    this.DSUStorage = storage.getDSUStorage();
     this.PATH = path;
   }
 

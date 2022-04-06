@@ -6,8 +6,9 @@ class DSUService {
 
     PATH = "/";
 
-    constructor(path = this.PATH) {
-        this.DSUStorage = storage.getDSUStorage();
+    constructor(path = this.PATH, DSUStorage) {
+        this.DSUStorage = DSUStorage;
+        // this.DSUStorage = storage.getDSUStorage();
         this.PATH = path;
     }
 
@@ -74,13 +75,15 @@ class DSUService {
 
     getEntity(uid, path, callback) {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
-        this.DSUStorage.getItem(this._getDsuStoragePath(uid, path), (err, content) => {
-            if (err) {
-                return callback(err, undefined);
-            }
-            let textDecoder = new TextDecoder('utf-8');
-            callback(undefined, JSON.parse(textDecoder.decode(content)));
-        });
+        this.letDSUStorageInit().then(() => {
+            this.DSUStorage.getItem(this._getDsuStoragePath(uid, path), (err, content) => {
+                if (err) {
+                    return callback(err, undefined);
+                }
+                let textDecoder = new TextDecoder('utf-8');
+                callback(undefined, JSON.parse(textDecoder.decode(content)));
+            });
+        })
     }
 
     async getEntityAsync(uid, path) {
@@ -180,12 +183,14 @@ class DSUService {
     updateEntity(entity, path, callback) {
         entity.volatile = undefined;
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
-        this.DSUStorage.setObject(this._getDsuStoragePath(entity.uid, path), entity, (err) => {
-            if (err) {
-                return callback(err, undefined);
-            }
-            callback(undefined, entity);
-        });
+        this.letDSUStorageInit().then(() => {
+            this.DSUStorage.setObject(this._getDsuStoragePath(entity.uid, path), entity, (err) => {
+                if (err) {
+                    return callback(err, undefined);
+                }
+                callback(undefined, entity);
+            });
+        })
     }
 
 
@@ -353,13 +358,15 @@ class DSUService {
     }
 
     getEntityPath(keySSI, pathPrefix, callback){
-        this.DSUStorage.listMountedDSUs(pathPrefix, (err, dsuList) => {
-            const dsu  = dsuList.find(dsu=>dsu.identifier === keySSI);
-            if(!dsu){
-                return callback(undefined, keySSI);
-            }
-            callback(undefined,dsu.path);
-        });
+        this.letDSUStorageInit().then(() => {
+            this.DSUStorage.listMountedDSUs(pathPrefix, (err, dsuList) => {
+                const dsu  = dsuList.find(dsu=>dsu.identifier === keySSI);
+                if(!dsu){
+                    return callback(undefined, keySSI);
+                }
+                callback(undefined,dsu.path);
+            });
+        })
     }
 
     async getEntityPathAsync(knownIdentifier, pathPrefix){
@@ -367,13 +374,15 @@ class DSUService {
     }
 
     getEntityMountSSI(pathPrefix, callback){
-        this.DSUStorage.listMountedDSUs(pathPrefix, (err, dsuList) => {
-            if(err){
-                return callback(err);
-            }
-            const targetedDSU = dsuList[0];
-            return callback(undefined, targetedDSU.identifier);
-        });
+        this.letDSUStorageInit().then(() => {
+            this.DSUStorage.listMountedDSUs(pathPrefix, (err, dsuList) => {
+                if(err){
+                    return callback(err);
+                }
+                const targetedDSU = dsuList[0];
+                return callback(undefined, targetedDSU.identifier);
+            });
+        })
     }
 
 }

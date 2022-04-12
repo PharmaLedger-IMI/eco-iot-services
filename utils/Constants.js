@@ -66,6 +66,7 @@ const MESSAGES = {
 
     SPONSOR :{
         SIGN_ECOSENT : 'sign-econsent',
+        ADD_CONSENT_VERSION:"add-econsent-version",
         UPDATE_ECOSENT: 'update-econsent',
         UPDATE_SITE_STATUS: 'update-site-status',
         UPDATE_SITE: 'update-site'

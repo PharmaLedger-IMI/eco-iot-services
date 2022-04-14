@@ -100,7 +100,13 @@ const TRIAL_PARTICIPANT_STATUS = {
     SCREENED: 'Screened',
     PLANNED: 'Planned'
 }
+const DATE_UTILS = {
+    FORMATS: {
+        YearMonthDayPattern: "YYYY-MM-DD"
+    }
+}
 module.exports = {
+    DATE_UTILS,
     MESSAGES,
     ECO_STATUSES,
     TRIAL_PARTICIPANT_STATUS,

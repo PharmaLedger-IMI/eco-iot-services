@@ -248,10 +248,10 @@ class DSUService {
     return this.asyncMyFunction(this.unmountEntity, [...arguments]);
   }
 
-  getSReadSSI(seedSSI, callback) {
+  getSReadSSI(seedSSI) {
     const keySSISpace = opendsu.loadAPI('keyssi');
     let parsedSeedSSI = keySSISpace.parse(seedSSI);
-    callback(undefined, parsedSeedSSI.derive().getIdentifier());
+    return parsedSeedSSI.derive().getIdentifier();
   }
 
   getAnchorId(ssi) {

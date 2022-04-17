@@ -69,7 +69,9 @@ const MESSAGES = {
         ADD_CONSENT_VERSION:"add-econsent-version",
         UPDATE_ECOSENT: 'update-econsent',
         UPDATE_SITE_STATUS: 'update-site-status',
-        UPDATE_SITE: 'update-site'
+        UPDATE_SITE: 'update-site',
+        TP_ADDED:"tp-added",
+        TP_CONSENT_UPDATE:"tp-consent-update",
     }
 
 }

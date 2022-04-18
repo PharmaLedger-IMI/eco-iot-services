@@ -72,6 +72,7 @@ const MESSAGES = {
         UPDATE_SITE: 'update-site',
         TP_ADDED:"tp-added",
         TP_CONSENT_UPDATE:"tp-consent-update",
+        ADDED_TS_NUMBER:"added-ts-number"
     }
 
 }

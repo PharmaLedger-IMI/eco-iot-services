@@ -3,7 +3,10 @@ const w3cDID = opendsu.loadAPI('w3cdid');
 const scAPI = opendsu.loadAPI("sc");
 const DidService = require("./DidService");
 const messageQueueServiceInstance = require("./MessageQueueService");
-const iotAdaptorIdentityEndpoint = "http://localhost:3000/iotAdapter/adaptorIdentity/"
+
+function getIotAdaptorEndpoint(endpoint) {
+    return endpoint + "/iotAdapter/adaptorIdentity/";
+}
 
 class CommunicationService {
 
@@ -18,23 +21,23 @@ class CommunicationService {
     createOrLoadIdentity() {
 
         let didService = DidService.getDidServiceInstance();
-        didService.getDID().then((did)=>{
-            const didData = DidService.getDidData(did);
+        didService.getEnvironmentData().then((envData) => {
+            this.environmentData = envData;
+            const didData = DidService.getDidData(this.environmentData.did);
 
             try {
                 const sc = scAPI.getSecurityContext();
                 sc.on("initialised", async () => {
                     try {
                         this.didDocument = await this.getDidDocumentInstance(didData);
-                    }
-                    catch (e){
+                    } catch (e) {
                         console.log(e);
                     }
                 });
             } catch (e) {
                 console.error(e);
             }
-        }).catch ((e)=>{
+        }).catch((e) => {
             console.error(e);
         });
 
@@ -96,7 +99,7 @@ class CommunicationService {
     }
 
     async sendMessageToIotAdaptor(data) {
-        return fetch(iotAdaptorIdentityEndpoint, {
+        return fetch(getIotAdaptorEndpoint(this.environmentData.iotAdaptorEndpoint), {
             mode: 'cors'
         }).then(async response => {
             response.json().then(async (didMessage) => {

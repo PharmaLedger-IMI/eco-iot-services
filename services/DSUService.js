@@ -344,6 +344,15 @@ class DSUService {
     });
   };
 
+  copyFile(path, destination, callback) {
+    this.readFile(path,(err,data) => {
+      if(err) {
+        return callback(err);
+      }
+      this.writeFile(destination, data, callback)
+    })
+  }
+
   readFile(path, callback) {
     [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
     this.letDSUStorageInit().then(() => {

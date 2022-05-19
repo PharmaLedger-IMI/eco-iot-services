@@ -19,28 +19,23 @@ class CommunicationService {
     }
 
     createOrLoadIdentity() {
+        const sc = scAPI.getSecurityContext();
+        sc.on("initialised", () => {
+            let didService = DidService.getDidServiceInstance();
+            didService.getEnvironmentData().then(async (envData) => {
+                this.environmentData = envData;
+                console.log(envData);
+                const didData = DidService.getDidData(this.environmentData.did);
 
-        let didService = DidService.getDidServiceInstance();
-        didService.getEnvironmentData().then((envData) => {
-            this.environmentData = envData;
-            const didData = DidService.getDidData(this.environmentData.did);
-
-            try {
-                const sc = scAPI.getSecurityContext();
-                sc.on("initialised", async () => {
-                    try {
-                        this.didDocument = await this.getDidDocumentInstance(didData);
-                    } catch (e) {
-                        console.log(e);
-                    }
-                });
-            } catch (e) {
+                try {
+                    this.didDocument = await this.getDidDocumentInstance(didData);
+                } catch (e) {
+                    console.log(e);
+                }
+            }).catch((e) => {
                 console.error(e);
-            }
-        }).catch((e) => {
-            console.error(e);
+            });
         });
-
     }
 
     async getDidDocumentInstance(didData) {

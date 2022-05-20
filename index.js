@@ -16,6 +16,7 @@ module.exports = {
     EvidenceService:require("./services/iot/EvidenceService"),
     DeviceServices: require("./services/iot/DeviceServices"),
     QuestionnaireService: require("./services/iot/QuestionnaireService"),
+    DeviceAssignationService: require("./services/iot/DeviceAssignationService"),
     models: require("./models"),
     getDataSourceFactory: () => require("./factories/DataSourceFactory"),
     getBreadCrumbManager: () => require("./others/BreadCrumbManager")

@@ -27,7 +27,8 @@ const MESSAGES = {
                 REFRESH_TRIAL: 'Trial needs to be refreshed.',
                 SCHEDULE_VISIT: 'A visit was scheduled.',
                 VISIT_DECLINED: 'A visit was declined by the patient',
-                VISIT_ACCEPTED: 'A visit was accepted by the patient'
+                VISIT_ACCEPTED: 'A visit was accepted by the patient',
+                VISIT_RESCHEDULED: 'A visit was rescheduled by the patient'
             },
             TYPE: {
                 ADD_TO_TRIAL: 'add-to-trial',

@@ -94,7 +94,8 @@ const NOTIFICATIONS_TYPE = {
     WITHDRAWS: 'Withdraws',
     CONSENT_UPDATES: 'Consent Updates',
     MILESTONES_REMINDERS: 'Milestones Reminders',
-    TRIAL_SUBJECT_QUESTIONS: 'Trial Subject Questions'
+    TRIAL_SUBJECT_QUESTIONS: 'Trial Subject Questions',
+    NEW_FEEDBACK:"New Feedback",
 }
 
 const TRIAL_PARTICIPANT_STATUS = {

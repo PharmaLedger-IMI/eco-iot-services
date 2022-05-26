@@ -24,7 +24,6 @@ const MESSAGES = {
             },
             PATIENT: {
                 ADD_TO_TRIAL: 'You were added to trial',
-                REFRESH_TRIAL: 'Trial needs to be refreshed.',
                 SCHEDULE_VISIT: 'A visit was scheduled.',
                 VISIT_DECLINED: 'A visit was declined by the patient',
                 VISIT_ACCEPTED: 'A visit was accepted by the patient',
@@ -32,7 +31,6 @@ const MESSAGES = {
             },
             TYPE: {
                 ADD_TO_TRIAL: 'add-to-trial',
-                REFRESH_TRIAL: 'refresh-trial',
                 SCHEDULE_VISIT: 'schedule-visit',
                 UPDATE_TP_NUMBER: 'update-tpNumber',
                 QUESTION_RESPONSE: 'question-response',
@@ -54,7 +52,6 @@ const MESSAGES = {
     PATIENT: {
         ADD_TO_TRIAL: 'add-to-trial',
         ADD_TRIAL_SUBJECT: 'add-trial-subject',
-        REFRESH_TRIAL: 'refresh-trial',
         SCHEDULE_VISIT: 'schedule-visit',
         UPDATE_TP_NUMBER: 'update-tpNumber',
         QUESTION_RESPONSE: 'question-response',

@@ -82,11 +82,15 @@ class CommunicationService {
                 ...data,
                 senderIdentity: await DidService.getDidServiceInstance().getDID()
             }
-            this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
-                if (err) {
-                    throw err;
-                }
-            });
+            return await new Promise((resolve, reject)=>{
+                this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve();
+                });
+            })
+
         } catch (e) {
             console.log(`[ERROR] Could not send message to did '${receiverDid}'. Does it exists?`);
             console.error(e);

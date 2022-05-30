@@ -82,7 +82,7 @@ class CommunicationService {
                 ...data,
                 senderIdentity: await DidService.getDidServiceInstance().getDID()
             }
-            return await new Promise((resolve, reject)=>{
+            return new Promise((resolve, reject)=>{
                 this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
                     if (err) {
                         reject(err);

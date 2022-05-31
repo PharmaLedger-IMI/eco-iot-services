@@ -58,6 +58,7 @@ const MESSAGES = {
         UPDATE_VISIT: 'update-visit',
         VISIT_RESPONSE: 'visit-response',
         VISIT_CONFIRMED: 'visit-confirmed',
+        PROFILE_CREATED: 'profile-created',
 
         SEND_TRIAL_CONSENT_DSU_TO_HCO: 'send-trial-consent-to-hco',
     },

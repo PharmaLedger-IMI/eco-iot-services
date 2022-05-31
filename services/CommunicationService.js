@@ -98,6 +98,9 @@ class CommunicationService {
     }
 
     async sendMessageToIotAdaptor(data) {
+        if (typeof this.environmentData.iotAdaptorEndpoint === "undefined") {
+            throw new Error("iotAdaptorEndpoint not set in environment.js");
+        }
         return fetch(getIotAdaptorEndpoint(this.environmentData.iotAdaptorEndpoint), {
             mode: 'cors'
         }).then(async response => {

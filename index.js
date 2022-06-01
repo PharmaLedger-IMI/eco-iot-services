@@ -18,6 +18,8 @@ module.exports = {
     QuestionnaireService: require("./services/iot/QuestionnaireService"),
     DeviceAssignationService: require("./services/iot/DeviceAssignationService"),
     HealthDataService: require ("./services/iot/HealthDataService"),
+    StudiesService: require("./services/iot/StudiesService"),
+    StudyNotesService: require("./services/iot/StudyNotesService"),
     models: require("./models"),
     getDataSourceFactory: () => require("./factories/DataSourceFactory"),
     getBreadCrumbManager: () => require("./others/BreadCrumbManager")

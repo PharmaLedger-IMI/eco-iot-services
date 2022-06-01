@@ -94,7 +94,8 @@ const NOTIFICATIONS_TYPE = {
     MILESTONES_REMINDERS: 'Milestones Reminders',
     TRIAL_SUBJECT_QUESTIONS: 'Trial Subject Questions',
     NEW_FEEDBACK:"New Feedback",
-    NEW_EVIDENCE: 'New Evidence'
+    NEW_EVIDENCE: 'New Evidence',
+    NEW_STUDY: "New Study"
 }
 
 const TRIAL_PARTICIPANT_STATUS = {

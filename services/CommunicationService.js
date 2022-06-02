@@ -97,7 +97,7 @@ class CommunicationService {
         }
     }
 
-    async sendMessageToIotAdaptor(data) {
+    async sendMessageToIotAdapter(data) {
         if (typeof this.environmentData.iotAdaptorEndpoint === "undefined") {
             throw new Error("iotAdaptorEndpoint not set in environment.js");
         }

@@ -9,16 +9,6 @@ class DPService extends DSUService {
 
     mount = (keySSI, callback) => this.mountEntity(keySSI, callback);
 
-    getDP(callback) {
-        this.getEntities((err, dp) => {
-            if (err) {
-                return callback(err)
-            }
-            let myDP = dp && dp.length > 0 ? dp[0] : undefined
-            callback(err, myDP)
-        })
-    }
-
     saveDP(dp, callback) {
         this.saveEntity(dp, callback);
     }

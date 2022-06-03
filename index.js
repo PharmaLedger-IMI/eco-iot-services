@@ -2,6 +2,7 @@ const QuestionnaireService = require("./services/iot/QuestionnaireService");
 module.exports = {
     DidService:require("./services/DidService"),
     CommunicationService: require("./services/CommunicationService"),
+    DPService:require("./services/iot/DPService"),
     MessageHandlerService: require("./services/MessageHandlerService"),
     DateTimeService: require("./services/DateTimeService"),
     DSUService: require("./services/DSUService"),

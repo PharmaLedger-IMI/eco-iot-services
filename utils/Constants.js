@@ -95,7 +95,7 @@ const NOTIFICATIONS_TYPE = {
     TRIAL_SUBJECT_QUESTIONS: 'Trial Subject Questions',
     NEW_FEEDBACK:"New Feedback",
     NEW_EVIDENCE: 'New Evidence',
-    NEW_STUDY: "New Study"
+    NEW_STUDY: "new_study"
 }
 
 const TRIAL_PARTICIPANT_STATUS = {

@@ -21,6 +21,7 @@ module.exports = {
     HealthDataService: require ("./services/iot/HealthDataService"),
     StudiesService: require("./services/iot/StudiesService"),
     StudyNotesService: require("./services/iot/StudyNotesService"),
+    ResponsesService: require("./services/iot/ResponsesService"),
     models: require("./models"),
     getDataSourceFactory: () => require("./factories/DataSourceFactory"),
     getBreadCrumbManager: () => require("./others/BreadCrumbManager")

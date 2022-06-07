@@ -1,10 +1,14 @@
-const {getCommunicationServiceInstance} = require("./CommunicationService");
+const {getCommunicationServiceInstance, getExtraCommunicationService} = require("./CommunicationService");
 
 class MessageHandlerService {
 
-    constructor(newMessageHandler) {
+    constructor(did, newMessageHandler) {
+        if(typeof did === 'function') {
+               newMessageHandler = did;
+               did = null;
+        }
+        this.communicationService = did ? getExtraCommunicationService(did) : getCommunicationServiceInstance();
         this.newMessageHandler = newMessageHandler;
-        this.communicationService = getCommunicationServiceInstance();
         this.communicationService.listenForMessages(this.mqListenerHandler);
     }
 
@@ -24,6 +28,7 @@ class MessageHandlerService {
 }
 
 let instance = null;
+let customMessageHandlers = {};
 const init = (newMessageHandler) => {
     if (instance === null) {
         instance = new MessageHandlerService(newMessageHandler);
@@ -31,5 +36,12 @@ const init = (newMessageHandler) => {
     return instance;
 };
 
+const initCustomMessageHandler = (did, messageHandler) => {
+    if(!customMessageHandlers[did]) {
+        customMessageHandlers[did] = new MessageHandlerService(did, messageHandler);
+    }
+    return customMessageHandlers[did];
+}
 
-module.exports = {init};
+
+module.exports = {init,initCustomMessageHandler};

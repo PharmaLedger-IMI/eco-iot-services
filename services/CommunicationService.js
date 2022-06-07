@@ -14,8 +14,11 @@ class CommunicationService {
      * @param didType : String - the type of the did (did:name, did:group...)
      * @param publicName : String - the public name used by the sender to send a message
      */
-    constructor() {
-        this.createOrLoadIdentity();
+    constructor(optionalDid) {
+        if (!optionalDid) {
+            return this.createOrLoadIdentity();
+        }
+        this.loadOptionalIdentity(optionalDid);
     }
 
     createOrLoadIdentity() {
@@ -36,6 +39,25 @@ class CommunicationService {
                 console.error(e);
             });
         });
+    }
+
+    async loadOptionalIdentity(optionalDid) {
+
+        const getDidData = (didString) => {
+            const splitDid = didString.split(":");
+            return {
+                didType: `${splitDid[0]}:${splitDid[1]}`,
+                publicName: splitDid[3],
+                domain: splitDid[2]
+            };
+        }
+
+        const didData = getDidData(optionalDid);
+        try {
+            this.didDocument = await this.getDidDocumentInstance(didData);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     async getDidDocumentInstance(didData) {
@@ -82,7 +104,7 @@ class CommunicationService {
                 ...data,
                 senderIdentity: await DidService.getDidServiceInstance().getDID()
             }
-            return new Promise((resolve, reject)=>{
+            return new Promise((resolve, reject) => {
                 this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
                     if (err) {
                         reject(err);
@@ -144,6 +166,7 @@ class CommunicationService {
 }
 
 let instance = null;
+let extraCommunicationInstances = {};
 const getCommunicationServiceInstance = () => {
     if (instance === null) {
         instance = new CommunicationService();
@@ -152,6 +175,14 @@ const getCommunicationServiceInstance = () => {
     return instance;
 };
 
+const getExtraCommunicationService = (optionalDid) => {
+    if (!extraCommunicationInstances[optionalDid]) {
+        extraCommunicationInstances[optionalDid] = new CommunicationService(optionalDid);
+    }
+    return extraCommunicationInstances[optionalDid];
+}
+
 module.exports = {
-    getCommunicationServiceInstance
+    getCommunicationServiceInstance,
+    getExtraCommunicationService,
 };

@@ -16,6 +16,11 @@ class DPService extends DSUService {
     updateDP(dp, callback) {
         this.updateEntity(dp, callback);
     }
+
+    getDPs(callback) {
+        this.getEntities(callback);
+    }
+
 }
 
 let instance = null

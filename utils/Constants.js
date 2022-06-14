@@ -13,9 +13,10 @@ const MESSAGES = {
         ADD_TRIAl_CONSENT : 'add-trial-consent',
         ADD_PATIENT_TO_TRIAL: 'add-to-trial',
         // NEW MESSAGES
-        SEND_HCO_DSU_TO_PATIENT: 'send-hco-dsu-to-patient',
+        SEND_HCO_DSU_TO_PATIENT: 'send_hco_dsu_to_patient',
         SEND_HCO_DSU_TO_SPONSOR: 'send-hco-dsu-to-sponsor',
-        SEND_REFRESH_CONSENTS_TO_PATIENT: 'send-refresh-consents',
+        SEND_REFRESH_CONSENTS_TO_PATIENT: 'send_refresh_consents',
+        CLINICAL_SITE_QUESTIONNAIRE: 'clinical_site_questionnaire',
 
         COMMUNICATION: {
             SPONSOR: {
@@ -31,7 +32,7 @@ const MESSAGES = {
             },
             TYPE: {
                 ADD_TO_TRIAL: 'add-to-trial',
-                SCHEDULE_VISIT: 'schedule-visit',
+                SCHEDULE_VISIT: 'schedule_visit',
                 UPDATE_TP_NUMBER: 'update-tpNumber',
                 QUESTION_RESPONSE: 'question-response',
                 UPDATE_VISIT: 'update-visit',
@@ -53,9 +54,9 @@ const MESSAGES = {
         ADD_TO_TRIAL: 'add-to-trial',
         ADD_TRIAL_SUBJECT: 'add-trial-subject',
         SCHEDULE_VISIT: 'schedule-visit',
-        UPDATE_TP_NUMBER: 'update-tpNumber',
-        QUESTION_RESPONSE: 'question-response',
-        UPDATE_VISIT: 'update-visit',
+        UPDATE_TP_NUMBER: 'update_tpNumber',
+        QUESTION_RESPONSE: 'question_response',
+        UPDATE_VISIT: 'update_visit',
         VISIT_RESPONSE: 'visit-response',
         VISIT_CONFIRMED: 'visit-confirmed',
         CREATE_DP: 'create_dp',
@@ -84,17 +85,17 @@ const ECO_STATUSES = {
 }
 
 const NOTIFICATIONS_TYPE = {
-    NEW_TRIAL:"New Trial",
-    NEW_VISIT:"New Visit",
-    VISIT_SCHEDULED:"New visit was scheduled",
-    VISIT_UPDATE:"Visit was updated",
+    NEW_TRIAL:"new_trial",
+    NEW_VISIT:"new_visit",
+    VISIT_SCHEDULED:"schedule_visit",
+    VISIT_UPDATE:"update_visit",
     TRIAL_UPDATES: 'Trial Updates',
     WITHDRAWS: 'Withdraws',
     CONSENT_UPDATES: 'Consent Updates',
     MILESTONES_REMINDERS: 'Milestones Reminders',
     TRIAL_SUBJECT_QUESTIONS: 'Trial Subject Questions',
-    NEW_FEEDBACK:"New Feedback",
-    NEW_EVIDENCE: 'New Evidence',
+    NEW_FEEDBACK:"new_feedback",
+    NEW_EVIDENCE: 'new_evidence',
     NEW_STUDY: "new_study"
 }
 

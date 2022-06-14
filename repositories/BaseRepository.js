@@ -1,3 +1,6 @@
+const opendsu = require('opendsu');
+const storage = opendsu.loadApi('storage');
+
 const {getSharedStorage} = require('../services/SharedStorage.js');
 
 const TABLE_NAMES = {
@@ -22,7 +25,8 @@ const TABLE_NAMES = {
 
 class BaseRepository {
 
-    constructor(tableName, DSUStorage) {
+    constructor(tableName) {
+        const DSUStorage = storage.getDSUStorage();
         this.StorageService = getSharedStorage(DSUStorage);
         this.tableName = tableName;
     }
@@ -48,11 +52,11 @@ class BaseRepository {
     updateAsync = (key, value) => this.StorageService.updateRecordAsync(this.tableName, key, value);
 }
 
-const getInstance = (tableName, DSUStorage) => {
+const getInstance = (tableName) => {
     if (!allTables.includes(tableName)) {
         throw  new Error(`The table ${tableName} does not exists!`);
     }
-    return new BaseRepository(tableName, DSUStorage);
+    return new BaseRepository(tableName);
 }
 
 let toBeReturnedObject = {

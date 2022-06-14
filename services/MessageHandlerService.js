@@ -4,8 +4,8 @@ class MessageHandlerService {
 
     constructor(did, newMessageHandler) {
         if(typeof did === 'function') {
-               newMessageHandler = did;
-               did = null;
+            newMessageHandler = did;
+            did = null;
         }
         this.communicationService = did ? getExtraCommunicationService(did) : getCommunicationServiceInstance();
         this.newMessageHandler = newMessageHandler;
@@ -22,7 +22,6 @@ class MessageHandlerService {
             // TODO: Check for other types of errors that should be handled and to restart the listener
             return console.error(err);
         }
-
         this.newMessageHandler(message);
     }
 }

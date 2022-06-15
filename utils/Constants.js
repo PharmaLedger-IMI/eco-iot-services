@@ -103,7 +103,11 @@ const TRIAL_PARTICIPANT_STATUS = {
     WITHDRAW: 'Withdrawed',
     DECLINED: 'Declined',
     SCREENED: 'Screened',
-    PLANNED: 'Planned'
+    PLANNED: 'Planned',
+    END_OF_TREATMENT: "End Of Treatment",
+    COMPLETED: "Completed",
+    DISCONTINUED: "Discontinued",
+    SCREEN_FAILED: "Screen Failed"
 }
 const DATE_UTILS = {
     FORMATS: {

@@ -15,7 +15,7 @@ class CommunicationService {
      * @param publicName : String - the public name used by the sender to send a message
      */
     constructor(optionalDid) {
-        if (!optionalDid) {
+        if (!optionalDid ||  typeof optionalDid !== 'string') {
             return this.createOrLoadIdentity();
         }
         this.loadOptionalIdentity(optionalDid);

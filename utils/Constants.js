@@ -34,8 +34,8 @@ const MESSAGES = {
                 ADD_TO_TRIAL: 'add-to-trial',
                 SCHEDULE_VISIT: 'schedule_visit',
                 UPDATE_TP_NUMBER: 'update-tpNumber',
-                QUESTION_RESPONSE: 'question-response',
-                UPDATE_VISIT: 'update-visit',
+                QUESTION_RESPONSE: 'question_response',
+                UPDATE_VISIT: 'update_visit',
                 VISIT_RESPONSE: 'visit-response',
                 VISIT_CONFIRMED: 'visit-confirmed'
             }

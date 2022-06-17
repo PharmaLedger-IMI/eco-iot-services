@@ -53,9 +53,9 @@ class CommunicationService {
         const getDidData = (didString) => {
             const splitDid = didString.split(":");
             return {
-                didType: `${splitDid[0]}:${splitDid[1]}`,
-                publicName: splitDid[3],
-                domain: splitDid[2]
+                didType: `${splitDid[1]}:${splitDid[2]}`,
+                publicName: splitDid[4],
+                domain: splitDid[3]
             };
         }
 

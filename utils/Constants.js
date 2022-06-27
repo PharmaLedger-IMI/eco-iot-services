@@ -99,7 +99,8 @@ const NOTIFICATIONS_TYPE = {
     NEW_STUDY: "new_study",
     NEW_HEALTHDATA: "new_healthdata",
     NEW_TPNUMBER: "TP number was assigned for yourself",
-    NEW_CONSENTS: "New Consents"
+    NEW_CONSENTS: "New Consents",
+    UPDATE_STATUS:"update_status"
 }
 
 const TRIAL_PARTICIPANT_STATUS = {

@@ -37,7 +37,7 @@ const MESSAGES = {
                 QUESTION_RESPONSE: 'question_response',
                 UPDATE_VISIT: 'update_visit',
                 VISIT_RESPONSE: 'visit-response',
-                VISIT_CONFIRMED: 'visit-confirmed'
+                VISIT_CONFIRMED: 'visit_confirmed'
             }
         },
         FEEDBACK: {
@@ -116,7 +116,10 @@ const TRIAL_PARTICIPANT_STATUS = {
 }
 const DATE_UTILS = {
     FORMATS: {
-        YearMonthDayPattern: "YYYY-MM-DD"
+        YearMonthDayPattern: "YYYY-MM-DD",
+        YMDDateTimeFormatPattern: 'YYYY-MM-DD',
+        HourFormatPattern: "HH:mm",
+        DateTimeFormatPattern: 'DD-MMM-YYYY, HH:mm',
     }
 }
 module.exports = {

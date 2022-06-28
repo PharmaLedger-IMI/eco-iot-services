@@ -17,6 +17,10 @@ const MESSAGES = {
         SEND_HCO_DSU_TO_SPONSOR: 'send-hco-dsu-to-sponsor',
         SEND_REFRESH_CONSENTS_TO_PATIENT: 'send_refresh_consents',
         CLINICAL_SITE_QUESTIONNAIRE: 'clinical_site_questionnaire',
+        UPDATE_STATUS: 'update_status',
+        VISIT_SCHEDULED: 'schedule_visit',
+        VISIT_CONFIRMED: 'visit_confirmed',
+
 
         COMMUNICATION: {
             SPONSOR: {
@@ -28,7 +32,7 @@ const MESSAGES = {
                 SCHEDULE_VISIT: 'A visit was scheduled.',
                 VISIT_DECLINED: 'A visit was declined by the patient',
                 VISIT_ACCEPTED: 'A visit was accepted by the patient',
-                VISIT_RESCHEDULED: 'A visit was rescheduled by the patient'
+                VISIT_RESCHEDULED: 'A visit was rescheduled by the patient',
             },
             TYPE: {
                 ADD_TO_TRIAL: 'add-to-trial',
@@ -37,7 +41,8 @@ const MESSAGES = {
                 QUESTION_RESPONSE: 'question_response',
                 UPDATE_VISIT: 'update_visit',
                 VISIT_RESPONSE: 'visit-response',
-                VISIT_CONFIRMED: 'visit_confirmed'
+                VISIT_CONFIRMED: 'visit_confirmed',
+
             }
         },
         FEEDBACK: {
@@ -73,6 +78,11 @@ const MESSAGES = {
         TP_ADDED:"tp-added",
         TP_CONSENT_UPDATE:"tp-consent-update",
         ADDED_TS_NUMBER:"added-ts-number"
+    },
+
+    RESEARCHER: {
+        NEW_FEEDBACK: 'new_feedback',
+        NEW_EVIDENCE:"new_evidence",
     }
 
 }
@@ -85,23 +95,91 @@ const ECO_STATUSES = {
 }
 
 const NOTIFICATIONS_TYPE = {
-    NEW_TRIAL:"new_trial",
-    NEW_VISIT:"new_visit",
-    VISIT_SCHEDULED:"schedule_visit",
-    VISIT_UPDATE:"update_visit",
     TRIAL_UPDATES: 'Trial Updates',
     WITHDRAWS: 'Withdraws',
     CONSENT_UPDATES: 'Consent Updates',
     MILESTONES_REMINDERS: 'Milestones Reminders',
     TRIAL_SUBJECT_QUESTIONS: 'Trial Subject Questions',
-    NEW_FEEDBACK:"new_feedback",
-    NEW_EVIDENCE: 'new_evidence',
-    NEW_STUDY: "new_study",
-    NEW_HEALTHDATA: "new_healthdata",
-    NEW_TPNUMBER: "TP number was assigned for yourself",
-    NEW_CONSENTS: "New Consents",
-    UPDATE_STATUS:"update_status"
+
+    //New Notifications Dictionary
+
+    // WITHDRAWS : {
+    //     notificationTitle:"WITHDRAWS",
+    //     // tagPage:"",
+    // },
+    // CONSENT_UPDATES : {
+    //     notificationTitle:"Consent Updates",
+    //     // tagPage:"",
+    // },
+    // MILESTONES_REMINDERS : {
+    //     notificationTitle:"Milestones Reminders",
+    //     // tagPage:"",
+    // },
+    // TRIAL_SUBJECT_QUESTIONS : {
+    //     notificationTitle:"Trial Subject Questions",
+    //     // tagPage:"",
+    // },
+    // TRIAL_UPDATES : {
+    //     notificationTitle:"Trial Updates",
+    //     tagPage:"trial",
+    // },
+
+    ///
+    NEW_TRIAL : {
+        notificationTitle:"New trial",
+        tagPage:"trial",
+    },
+    NEW_VISIT : {
+        notificationTitle:"New visit received",
+        tagPage:"task-calendar",
+    },
+    VISIT_UPDATE : {
+        notificationTitle:"Visit updated",
+        tagPage:"task-calendar",
+    },
+    NEW_FEEDBACK : {
+        notificationTitle:"New feedback",
+        tagPage:"completed-studies",
+    },
+    NEW_EVIDENCE : {
+        notificationTitle:"New evidence",
+        tagPage:"completed-studies",
+    },
+    NEW_STUDY : {
+        notificationTitle:"New study",
+        tagPage:"completed-studies",
+    },
+    NEW_HEALTHDATA : {
+        notificationTitle:"New healthdata",
+        tagPage:"iot-health-studies",
+    },
+    NEW_TPNUMBER : {
+        notificationTitle:"TP number was assigned for yourself",
+        tagPage:"trial",
+    },
+    NEW_CONSENTS: {
+        notificationTitle :"New Consents",
+        tagPage:"trial",
+    },
+    UPDATE_STATUS: {
+        notificationTitle :"Tp status updated",
+        tagPage:"trial",
+    },
+    VISIT_CONFIRMED: {
+        notificationTitle :"HCO confirmed a visit",
+        tagPage:"task-calendar",
+    },
+    CLINICAL_SITE_QUESTIONNAIRE: {
+        notificationTitle :"Received a new questionnaire",
+        tagPage:"task-calendar",
+    },
+    QUESTION_RESPONSE: {
+        notificationTitle :"New questionnaire response",
+        tagPage:"task-calendar",
+    },
+
 }
+
 
 const TRIAL_PARTICIPANT_STATUS = {
     ENROLLED: 'Enrolled',
@@ -114,6 +192,7 @@ const TRIAL_PARTICIPANT_STATUS = {
     DISCONTINUED: "Discontinued",
     SCREEN_FAILED: "Screen Failed"
 }
+
 const DATE_UTILS = {
     FORMATS: {
         YearMonthDayPattern: "YYYY-MM-DD",
@@ -122,10 +201,11 @@ const DATE_UTILS = {
         DateTimeFormatPattern: 'DD-MMM-YYYY, HH:mm',
     }
 }
+
 module.exports = {
     DATE_UTILS,
     MESSAGES,
     ECO_STATUSES,
     TRIAL_PARTICIPANT_STATUS,
-    NOTIFICATIONS_TYPE
+    NOTIFICATIONS_TYPE,
 };

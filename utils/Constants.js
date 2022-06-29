@@ -25,6 +25,7 @@ const MESSAGES = {
         COMMUNICATION: {
             SPONSOR: {
                 SIGN_ECONSENT: 'HCO signed econsent',
+                DECLINE_ECONSENT: 'HCO declined econsent',
                 VISIT_CONFIRMED: 'HCO confirmed a visit'
             },
             PATIENT: {
@@ -71,6 +72,7 @@ const MESSAGES = {
 
     SPONSOR :{
         SIGN_ECOSENT : 'sign-econsent',
+        DECLINE_ECOSENT : 'decline-econsent',
         ADD_CONSENT_VERSION:"add-econsent-version",
         UPDATE_ECOSENT: 'update-econsent',
         UPDATE_SITE_STATUS: 'update-site-status',

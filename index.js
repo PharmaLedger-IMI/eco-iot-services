@@ -19,6 +19,7 @@ module.exports = {
     QuestionnaireService: require("./services/iot/QuestionnaireService"),
     DeviceAssignationService: require("./services/iot/DeviceAssignationService"),
     HealthDataService: require ("./services/iot/HealthDataService"),
+    PermissionedHealthDataService: require("./services/iot/PermissionedHealthDataService"),
     StudiesService: require("./services/iot/StudiesService"),
     StudyNotesService: require("./services/iot/StudyNotesService"),
     ResponsesService: require("./services/iot/ResponsesService"),

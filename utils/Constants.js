@@ -156,6 +156,10 @@ const NOTIFICATIONS_TYPE = {
         notificationTitle:"New healthdata",
         tagPage:"iot-health-studies",
     },
+    NEW_INVITATION : {
+        notificationTitle:"New research study invitation",
+        tagPage:"iot-health-studies",
+    },
     NEW_TPNUMBER : {
         notificationTitle:"TP number was assigned for yourself",
         tagPage:"trial",

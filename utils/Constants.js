@@ -153,7 +153,7 @@ const NOTIFICATIONS_TYPE = {
         tagPage:"completed-studies",
     },
     NEW_HEALTHDATA : {
-        notificationTitle:"New healthdata",
+        notificationTitle:"New health data available",
         tagPage:"iot-health-studies",
     },
     NEW_INVITATION : {

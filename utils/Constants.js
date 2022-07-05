@@ -176,6 +176,10 @@ const NOTIFICATIONS_TYPE = {
         notificationTitle :"HCO confirmed a visit",
         tagPage:"task-calendar",
     },
+    VISIT_DETAILS_UPDATED : {
+        notificationTitle :"Visit details updated!",
+        tagPage:"task-calendar"
+    },
     CLINICAL_SITE_QUESTIONNAIRE: {
         notificationTitle :"Received a new questionnaire",
         tagPage:"task-calendar",

@@ -12,7 +12,12 @@ class HealthDataService extends DSUService {
 
     getObservation = (uid, callback) => this.getEntity(uid, callback);
 
-    saveObservation = (data, callback) => this.saveEntity(data, callback);
+    saveObservation = (data, callback) => {
+        const observations = {
+            observations: data
+        }
+        this.saveEntity(observations, callback);
+    }
 
     getSReadSSI = (pathPrefix, callback) => this.getEntityMountSSI(pathPrefix, callback);
 

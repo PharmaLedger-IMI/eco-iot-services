@@ -161,35 +161,21 @@ const PATIENT_NOTIFICATIONS_TYPE = {
 }
 
 const HCO_NOTIFICATIONS_TYPE = {
-    TRIAL_UPDATES: 'Trial Updates',
-    WITHDRAWS: 'Withdraws',
-    CONSENT_UPDATES: 'Consent Updates',
-    MILESTONES_REMINDERS: 'Milestones Reminders',
-    TRIAL_SUBJECT_QUESTIONS: 'Trial Subject Questions',
-
-    //New Notifications Dictionary
-
-    // WITHDRAWS : {
-    //     notificationTitle:"WITHDRAWS",
-    //     // tagPage:"",
-    // },
-    // CONSENT_UPDATES : {
-    //     notificationTitle:"Consent Updates",
-    //     // tagPage:"",
-    // },
-    // MILESTONES_REMINDERS : {
-    //     notificationTitle:"Milestones Reminders",
-    //     // tagPage:"",
-    // },
-    // TRIAL_SUBJECT_QUESTIONS : {
-    //     notificationTitle:"Trial Subject Questions",
-    //     // tagPage:"",
-    // },
-    // TRIAL_UPDATES : {
-    //     notificationTitle:"Trial Updates",
-    //     tagPage:"trial",
-    // },
-
+    TRIAL_UPDATES : {
+        notificationTitle:"Trial Updates",
+    },
+    WITHDRAWS : {
+        notificationTitle:"Withdraws",
+    },
+    CONSENT_UPDATES : {
+        notificationTitle:"Consent Updates",
+    },
+    MILESTONES_REMINDERS : {
+        notificationTitle:"Milestones Reminders",
+    },
+    TRIAL_SUBJECT_QUESTIONS : {
+        notificationTitle: "Trial Subject Questions",
+    },
 }
 
 

@@ -8,6 +8,7 @@ module.exports = {
     DSUService: require("./services/DSUService"),
     SharedStorage: require("./services/SharedStorage"),
     AbstractAPI: require("./services/AbstractAPI"),
+    JWTService: require("./services/JWTService"),
     BaseRepository: require("./repositories/BaseRepository"),
     Constants: require("./utils/Constants"),
     momentService: require('./utils/moment.min'),

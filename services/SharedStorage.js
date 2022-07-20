@@ -58,7 +58,13 @@ class SharedStorage {
     beginBatch = () => this.letDatabaseInit()
         .then(() => this.mydb.beginBatch()).catch(this.logError);
 
-    beginBatchAsync = async () => this.asyncMyFunction(this.beginBatch, []);
+    beginBatchAsync = async () => this.asyncMyFunction((callback) => {
+        this.letDatabaseInit()
+            .then(() => {
+                this.mydb.beginBatch();
+                callback();
+            }).catch(this.logError);
+    }, []);
 
     cancelBatch = (callback) => this.letDatabaseInit()
         .then(() => this.mydb.cancelBatch(callback)).catch(this.logError);

@@ -12,7 +12,7 @@ class MessageHandlerService {
         this.communicationService.listenForMessages(this.mqListenerHandler);
     }
 
-    mqListenerHandler = (err, message) => {
+    mqListenerHandler = async (err, message) => {
         if (err) {
             if (err.originalMessage === "socket hang up") {
                 console.log("Reloading after " + err.originalMessage);
@@ -22,7 +22,7 @@ class MessageHandlerService {
             // TODO: Check for other types of errors that should be handled and to restart the listener
             return console.error(err);
         }
-        this.newMessageHandler(message);
+        await this.newMessageHandler(message);
     }
 }
 

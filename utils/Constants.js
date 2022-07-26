@@ -185,6 +185,7 @@ const TRIAL_PARTICIPANT_STATUS = {
     DECLINED: 'Declined',
     SCREENED: 'Screened',
     PLANNED: 'Planned',
+    CONDUCTING: 'Conducting',
     END_OF_TREATMENT: "End Of Treatment",
     COMPLETED: "Completed",
     DISCONTINUED: "Discontinued",

@@ -172,6 +172,7 @@ class CommunicationService {
                             this.establishedConnectionCheckId = setTimeout(()=>{
                                 this.connectionDelay = INITIAL_CONNECTION_DELAY;
                                 this.reconnectionAttempts = 0;
+                                console.log("[MQ] Reconnecting was successfully ...")
                             },MAX_RECONENCT_DELAY)
 
                         }, this.connectionDelay);

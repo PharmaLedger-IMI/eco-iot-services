@@ -1,6 +1,7 @@
 const opendsu = require("opendsu");
 const keySSISpace = opendsu.loadApi('keyssi')
 const KEYSSI_FILE_PATH = 'keyssi.json';
+const indexedTimestampField = "__timestamp";
 
 class SharedStorage {
 
@@ -40,7 +41,20 @@ class SharedStorage {
             record.uid = key;
         }
         this.letDatabaseInit()
-            .then(() => this.mydb.insertRecord(tableName, key, record, () => this.getRecord(tableName, key, callback))).catch(this.logError);
+            .then(() => {
+                this.mydb.getIndexedFields(tableName, (err, indexedFields) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    if (!indexedFields.includes(indexedTimestampField)) {
+                        return this.mydb.addIndex(tableName, indexedTimestampField, ()=>{
+                            return this.mydb.insertRecord(tableName, key, record, () => this.getRecord(tableName, key, callback));
+                        });
+                    }
+                    return this.mydb.insertRecord(tableName, key, record, () => this.getRecord(tableName, key, callback));
+                    });
+            })
+            .catch(this.logError);
     }
 
     insertRecordAsync = async (tableName, key, record) => this.asyncMyFunction(this.insertRecord, [tableName, key, record]);

@@ -10,6 +10,11 @@ class DSUService {
     this.PATH = path;
   }
 
+  refreshDSU(ssi, callback) {
+    resolver.invalidateDSUCache(ssi);
+    resolver.loadDSU(ssi, callback);
+  }
+
   letDSUStorageInit = () => {
     if (typeof this.initializationPromise === 'undefined') {
       this.initializationPromise = new Promise((resolve) => {

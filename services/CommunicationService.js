@@ -21,11 +21,26 @@ class CommunicationService {
     constructor(optionalDid) {
         this.connectionDelay = INITIAL_CONNECTION_DELAY;
         this.reconnectionAttempts  = 0;
+        this.didReadyHandlers = [];
         if (!optionalDid ||  typeof optionalDid !== 'string') {
             return this.createOrLoadIdentity();
         }
         this.loadOptionalIdentity(optionalDid);
         
+    }
+
+    onPrimaryDidReady(callback){
+        if(!this.didDocument){
+            return this.didReadyHandlers.push(callback);
+        }
+        callback(undefined, this.didDocument)
+    }
+
+    notifySubscribers(err, didDocument){
+        while (this.didReadyHandlers.length > 0) {
+            let handler = this.didReadyHandlers.pop();
+            handler(err, didDocument);
+        }
     }
 
     createOrLoadIdentity() {
@@ -39,7 +54,10 @@ class CommunicationService {
 
                 try {
                     this.didDocument = await this.getDidDocumentInstance(didData);
+                    this.notifySubscribers(undefined, this.didDocument);
+
                 } catch (e) {
+                    this.notifySubscribers(e);
                     console.log(e);
                 }
             }).catch((e) => {

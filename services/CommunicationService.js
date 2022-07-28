@@ -5,8 +5,7 @@ const DidService = require("./DidService");
 const messageQueueServiceInstance = require("./MessageQueueService");
 const MAX_RECONNECTION_ATTEMPTS = 5;
 const INITIAL_CONNECTION_DELAY = 1000;
-const MAX_RECONENCT_DELAY = INITIAL_CONNECTION_DELAY * 30;
-// var reconnectionAttempts;
+const MAX_RECONNECT_DELAY = INITIAL_CONNECTION_DELAY * 30;
 
 function getIotAdaptorEndpoint(endpoint) {
     return endpoint + "/iotAdapter/adaptorIdentity/";
@@ -15,28 +14,29 @@ function getIotAdaptorEndpoint(endpoint) {
 class CommunicationService {
 
     /**
-     * @param didType : String - the type of the did (did:name, did:group...)
-     * @param publicName : String - the public name used by the sender to send a message
+     * @param optionalDid: {didType: string, publicName: string}
+     * <br /> <b>didType:</b> the type of the did (did:name, did:group...)
+     * <br /> <b>publicName:</b> the public name used by the sender to send a message
      */
     constructor(optionalDid) {
         this.connectionDelay = INITIAL_CONNECTION_DELAY;
-        this.reconnectionAttempts  = 0;
+        this.reconnectionAttempts = 0;
         this.didReadyHandlers = [];
-        if (!optionalDid ||  typeof optionalDid !== 'string') {
+        if (!optionalDid || typeof optionalDid !== 'string') {
             return this.createOrLoadIdentity();
         }
         this.loadOptionalIdentity(optionalDid);
-        
+
     }
 
-    onPrimaryDidReady(callback){
-        if(!this.didDocument){
+    onPrimaryDidReady(callback) {
+        if (!this.didDocument) {
             return this.didReadyHandlers.push(callback);
         }
         callback(undefined, this.didDocument)
     }
 
-    notifySubscribers(err, didDocument){
+    notifySubscribers(err, didDocument) {
         while (this.didReadyHandlers.length > 0) {
             let handler = this.didReadyHandlers.pop();
             handler(err, didDocument);
@@ -71,9 +71,7 @@ class CommunicationService {
         const getDidData = (didString) => {
             const splitDid = didString.split(":");
             return {
-                didType: `${splitDid[1]}:${splitDid[2]}`,
-                publicName: splitDid[4],
-                domain: splitDid[3]
+                didType: `${splitDid[1]}:${splitDid[2]}`, publicName: splitDid[4], domain: splitDid[3]
             };
         }
 
@@ -126,8 +124,7 @@ class CommunicationService {
             const receiverDidDocument = await this.resolveDidDocument(receiverDidData);
             //temporary: trust the sender that he is who pretends to be: @senderIdentity
             data = {
-                ...data,
-                senderIdentity: await DidService.getDidServiceInstance().getDID()
+                ...data, senderIdentity: await DidService.getDidServiceInstance().getDID()
             }
             return new Promise((resolve, reject) => {
                 this.didDocument.sendMessage(JSON.stringify(data), receiverDidDocument, (err) => {
@@ -167,43 +164,35 @@ class CommunicationService {
             });
         }
 
-        // TODO: Logs added to observer IoT Adapters behaviour using Communication service. Delete after testing.
-        console.log("[Communication Service] readMessage called:", this.didDocument.getIdentifier());
         this.didDocument.readMessage((err, decryptedMessage) => {
-            // TODO: Logs added to observer IoT Adapters behaviour using Communication service. Delete after testing.
-            console.log("[Communication Service] readMessage callback called: ", this.didDocument.getIdentifier(), err, decryptedMessage);
-           
             if (err) {
+                if (this.establishedConnectionCheckId) {
+                    clearTimeout(this.establishedConnectionCheckId);
+                }
 
-                    if(this.establishedConnectionCheckId){
-                        clearTimeout(this.establishedConnectionCheckId);
+                if (this.pendingReadRetryTimeoutId) {
+                    clearTimeout(this.pendingReadRetryTimeoutId);
+                }
+                if (this.reconnectionAttempts < MAX_RECONNECTION_ATTEMPTS) {
+                    if (this.connectionDelay < MAX_RECONNECT_DELAY) {
+                        this.connectionDelay = this.connectionDelay * 2;
                     }
 
-                    if(this.pendingReadRetryTimeoutId){
-                        clearTimeout(this.pendingReadRetryTimeoutId);
-                    }
-                    if (this.reconnectionAttempts < MAX_RECONNECTION_ATTEMPTS) {
-                        if (this.connectionDelay < MAX_RECONENCT_DELAY) {
-                            this.connectionDelay = this.connectionDelay * 2;
-                        }
+                    this.pendingReadRetryTimeoutId = setTimeout(() => {
+                        this.reconnectionAttempts++;
+                        console.log("Reading message attempt #", this.reconnectionAttempts)
+                        this.listenForMessages(callback);
+                        this.establishedConnectionCheckId = setTimeout(() => {
+                            this.connectionDelay = INITIAL_CONNECTION_DELAY;
+                            this.reconnectionAttempts = 0;
+                            console.log("[MQ] Reconnecting was successfully ...")
+                        }, MAX_RECONNECT_DELAY)
 
-                        this.pendingReadRetryTimeoutId = setTimeout(() => {
-                            this.reconnectionAttempts++;
-                            console.log("Reading message attempt #", this.reconnectionAttempts)
-                            this.listenForMessages(callback);
-                            this.establishedConnectionCheckId = setTimeout(()=>{
-                                this.connectionDelay = INITIAL_CONNECTION_DELAY;
-                                this.reconnectionAttempts = 0;
-                                console.log("[MQ] Reconnecting was successfully ...")
-                            },MAX_RECONENCT_DELAY)
-
-                        }, this.connectionDelay);
-                    }
-                    else{
-                        callback(new Error('Unexpected error occurred. Please refresh your application'));
-                    }
-            }
-            else {
+                    }, this.connectionDelay);
+                } else {
+                    callback(new Error('Unexpected error occurred. Please refresh your application'));
+                }
+            } else {
                 messageQueueServiceInstance.addCallback(async () => {
                     await callback(err, decryptedMessage);
                     this.listenForMessages(callback);
@@ -238,6 +227,5 @@ const getExtraCommunicationService = (optionalDid) => {
 }
 
 module.exports = {
-    getCommunicationServiceInstance,
-    getExtraCommunicationService,
+    getCommunicationServiceInstance, getExtraCommunicationService,
 };

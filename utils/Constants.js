@@ -192,6 +192,11 @@ const TRIAL_PARTICIPANT_STATUS = {
     SCREEN_FAILED: "Screen Failed"
 }
 
+const HCO_STAGE_STATUS = {
+    ENROLLING: 'Enrolling',
+    CONDUCTING: 'Conducting',
+}
+
 const DATE_UTILS = {
     FORMATS: {
         YearMonthDayPattern: "YYYY-MM-DD",
@@ -206,6 +211,7 @@ module.exports = {
     MESSAGES,
     ECO_STATUSES,
     TRIAL_PARTICIPANT_STATUS,
+    HCO_STAGE_STATUS,
     HCO_NOTIFICATIONS_TYPE,
     PATIENT_NOTIFICATIONS_TYPE
 };

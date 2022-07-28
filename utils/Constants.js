@@ -124,7 +124,7 @@ const PATIENT_NOTIFICATIONS_TYPE = {
     },
     NEW_HEALTHDATA : {
         notificationTitle:"New health data available",
-        tagPage:"iot-health-studies",
+        tagPage:"iot-data-selection",
     },
     NEW_INVITATION : {
         notificationTitle:"New research study invitation",

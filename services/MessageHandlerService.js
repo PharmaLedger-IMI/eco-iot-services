@@ -9,10 +9,15 @@ class MessageHandlerService {
         }
         this.communicationService = did ? getExtraCommunicationService(did) : getCommunicationServiceInstance();
         this.newMessageHandler = newMessageHandler;
+
+        // TODO: Logs added to observer IoT Adapters behaviour using Communication service. Delete after testing.
+        console.log("[IOT-ADAPTER] Starting listening for messages");
         this.communicationService.listenForMessages(this.mqListenerHandler);
     }
 
     mqListenerHandler = async (err, message) => {
+        // TODO: Logs added to observer IoT Adapters behaviour using Communication service. Delete after testing.
+        console.log("[IOT-ADAPTER] Read message Handler: ", err, message);
         if (err) {
             if (err.originalMessage === "socket hang up") {
                 console.log("Reloading after " + err.originalMessage);

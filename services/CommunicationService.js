@@ -167,7 +167,11 @@ class CommunicationService {
             });
         }
 
+        // TODO: Logs added to observer IoT Adapters behaviour using Communication service. Delete after testing.
+        console.log("[Communication Service] readMessage called:", this.didDocument.getIdentifier());
         this.didDocument.readMessage((err, decryptedMessage) => {
+            // TODO: Logs added to observer IoT Adapters behaviour using Communication service. Delete after testing.
+            console.log("[Communication Service] readMessage callback called: ", this.didDocument.getIdentifier(), err, decryptedMessage);
            
             if (err) {
 

@@ -50,6 +50,13 @@ class BreadCrumbManager extends WebcController {
             })
 
             if (spliceIndex > -1) {
+                if(this.breadcrumb[spliceIndex].state.hasOwnProperty('message')) {
+                    this.breadcrumb[spliceIndex].state.message = {};
+                    if(segmentModel.state.hasOwnProperty('message')) {
+                        segmentModel.state.message = {};
+                    }
+                }
+
                 this.breadcrumb.splice(spliceIndex);
             }
 

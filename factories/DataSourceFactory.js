@@ -16,7 +16,6 @@ class TableDataSource extends DataSource {
     }
 
     async getPageDataAsync(startOffset, dataLengthForCurrentPage) {
-        console.log({ startOffset, dataLengthForCurrentPage });
         if (this.model.tableData.length <= dataLengthForCurrentPage) {
             this.setPageSize(this.model.tableData.length);
         }
@@ -27,10 +26,8 @@ class TableDataSource extends DataSource {
         this.setRecordsNumber(this.model.tableData.length);
         if (dataLengthForCurrentPage > 0) {
             slicedData = Object.entries(this.model.tableData).slice(startOffset, startOffset + dataLengthForCurrentPage).map(entry => entry[1]);
-            console.log(slicedData)
         } else {
             slicedData = Object.entries(this.model.tableData).slice(0, startOffset - dataLengthForCurrentPage).map(entry => entry[1]);
-            console.log(slicedData)
         }
         return slicedData;
     }

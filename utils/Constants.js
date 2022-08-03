@@ -192,6 +192,13 @@ const TRIAL_PARTICIPANT_STATUS = {
     SCREEN_FAILED: "Screen Failed"
 }
 
+const TP_ACTIONNEEDED_NOTIFICATIONS = {
+    SET_TP_NUMBER: 'tp-number-set',
+    TP_VISIT_CONFIRMED: 'tp-visit-confirmed',
+    TP_VISIT_RESCHEDULED: "visit-rescheduled",
+    VISIT_CONFIRMED: 'visit-confirmed',
+}
+
 const HCO_STAGE_STATUS = {
     ENROLLING: 'Enrolling',
     CONDUCTING: 'Conducting',
@@ -213,5 +220,6 @@ module.exports = {
     TRIAL_PARTICIPANT_STATUS,
     HCO_STAGE_STATUS,
     HCO_NOTIFICATIONS_TYPE,
-    PATIENT_NOTIFICATIONS_TYPE
+    PATIENT_NOTIFICATIONS_TYPE,
+    TP_ACTIONNEEDED_NOTIFICATIONS
 };

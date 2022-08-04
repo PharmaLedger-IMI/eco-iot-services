@@ -210,6 +210,7 @@ const DATE_UTILS = {
         YMDDateTimeFormatPattern: 'YYYY-MM-DD',
         HourFormatPattern: "HH:mm",
         DateTimeFormatPattern: 'DD-MMM-YYYY, HH:mm',
+        YearMonthPattern:  'YYYY-MM',
     }
 }
 

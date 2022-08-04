@@ -16,6 +16,15 @@ class QuestionnaireService extends DSUService {
 
     updateQuestionnaire = (data, callback) => this.updateEntity(data, callback);
 
+    getQuestionnaireSReadSSI = (questionnaire, callback) => {
+        this.getEntityMountSSI("questionnaires", questionnaire.uid, (err, ssi) => {
+            if(err){
+                return callback(err);
+            }
+            const sReadSSI = this.getSReadSSI(ssi);
+            callback(undefined, sReadSSI);
+        });
+    }
 }
 
 module.exports = QuestionnaireService;

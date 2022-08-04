@@ -402,7 +402,11 @@ class DSUService {
     return this.asyncMyFunction(this.getEntityPath, [...arguments]);
   }
 
-  getEntityMountSSI(pathPrefix, callback) {
+  getEntityMountSSI(pathPrefix, entityUid, callback) {
+    if(typeof entityUid ==="function"){
+      callback = entityUid;
+      entityUid = undefined;
+    }
     this.letDSUStorageInit().then(() => {
       this.DSUStorage.listMountedDSUs(pathPrefix, (err, dsuList) => {
         if (err) {
@@ -411,7 +415,8 @@ class DSUService {
         if (dsuList.length === 0) {
           return callback(new Error('No mounted entity found for ' + pathPrefix));
         }
-        const targetedDSU = dsuList[0];
+
+        const targetedDSU = entityUid ? dsuList.find(dsu => dsu.path === entityUid) : dsuList[0];
         return callback(undefined, targetedDSU.identifier);
       });
     });

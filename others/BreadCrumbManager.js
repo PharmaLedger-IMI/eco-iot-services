@@ -40,6 +40,14 @@ class BreadCrumbManager extends WebcController {
             segment.disabled = index === breadCrumbs.length - 1;
         })
 
+        breadCrumbs.forEach((segment, index) => {
+            if (index < breadCrumbs.length - 1) {
+                if (segment.state.hasOwnProperty('message')) {
+                    segment.state.message = {};
+                }
+            }
+        })
+
     }
 
     breadcrumbHandler() {
@@ -50,13 +58,6 @@ class BreadCrumbManager extends WebcController {
             })
 
             if (spliceIndex > -1) {
-                if(this.breadcrumb[spliceIndex].state.hasOwnProperty('message')) {
-                    this.breadcrumb[spliceIndex].state.message = {};
-                    if(segmentModel.state.hasOwnProperty('message')) {
-                        segmentModel.state.message = {};
-                    }
-                }
-
                 this.breadcrumb.splice(spliceIndex);
             }
 

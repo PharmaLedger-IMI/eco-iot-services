@@ -183,13 +183,15 @@ const TRIAL_PARTICIPANT_STATUS = {
     ENROLLED: 'Enrolled',
     WITHDRAW: 'Withdrawed',
     DECLINED: 'Declined',
+    TP_WITHDRAWN: 'Tp Withdrawn',
     SCREENED: 'Screened',
     PLANNED: 'Planned',
     CONDUCTING: 'Conducting',
     END_OF_TREATMENT: "End Of Treatment",
     COMPLETED: "Completed",
     DISCONTINUED: "Discontinued",
-    SCREEN_FAILED: "Screen Failed"
+    SCREEN_FAILED: "Screen Failed",
+    WITHDRAWN: 'Withdrawn',
 }
 
 const TP_ACTIONNEEDED_NOTIFICATIONS = {

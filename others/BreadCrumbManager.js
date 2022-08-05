@@ -42,7 +42,7 @@ class BreadCrumbManager extends WebcController {
 
         breadCrumbs.forEach((segment, index) => {
             if (index < breadCrumbs.length - 1) {
-                if (segment.state.hasOwnProperty('message')) {
+                if (segment.state.hasOwnProperty('message') && Object.keys(segment.state.message).length > 0) {
                     segment.state.message = {};
                 }
             }

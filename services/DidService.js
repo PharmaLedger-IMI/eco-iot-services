@@ -1,3 +1,20 @@
+function toHex(input) {
+
+    input = input.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)
+
+    let hash = "",
+        alphabet = "0123456789abcdef",
+        alphabetLength = alphabet.length;
+
+    do {
+        hash = alphabet[input % alphabetLength] + hash;
+        input = parseInt(input / alphabetLength, 10);
+    } while (input);
+
+    return hash;
+
+}
+
 class DidService {
 
     constructor() {
@@ -66,7 +83,11 @@ class DidService {
                     }
 
                     const domain = await this.getWalletDomain();
-                    const did = `did:ssi:name:${domain}:${userDetails.username}`;
+                    const {email, company, password, username} = userDetails;
+                    const randomData = `${email}${company}${password}`;
+                    const hashCode = toHex(randomData);
+
+                    const did = `did:ssi:name:${domain}:${username}/${hashCode}`;
                     this.environmentData = {
                         ...envData,
                         did: did

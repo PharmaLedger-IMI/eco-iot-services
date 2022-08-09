@@ -186,7 +186,6 @@ const TRIAL_PARTICIPANT_STATUS = {
     TP_WITHDRAWN: 'Tp Withdrawn',
     SCREENED: 'Screened',
     PLANNED: 'Planned',
-    CONDUCTING: 'Conducting',
     END_OF_TREATMENT: "End Of Treatment",
     COMPLETED: "Completed",
     DISCONTINUED: "Discontinued",
@@ -202,8 +201,7 @@ const TP_ACTIONNEEDED_NOTIFICATIONS = {
 }
 
 const HCO_STAGE_STATUS = {
-    ENROLLING: 'Enrolling',
-    CONDUCTING: 'Conducting',
+    ENROLLING: 'Enrolling'
 }
 
 const DATE_UTILS = {

@@ -183,7 +183,7 @@ const TRIAL_PARTICIPANT_STATUS = {
     ENROLLED: 'Enrolled',
     WITHDRAW: 'Withdrawed',
     DECLINED: 'Declined',
-    TP_WITHDRAWN: 'Tp Withdrawn',
+    TP_WITHDRAWN: 'Withdraw Intention',
     SCREENED: 'Screened',
     PLANNED: 'Planned',
     END_OF_TREATMENT: "End Of Treatment",

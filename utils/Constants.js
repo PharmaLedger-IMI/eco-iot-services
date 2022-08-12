@@ -200,6 +200,12 @@ const TP_ACTIONNEEDED_NOTIFICATIONS = {
     VISIT_CONFIRMED: 'visit-confirmed',
 }
 
+const QUESTION_TYPES = {
+    FREE_TEXT:"string",
+    SLIDER:"slider",
+    CHECKBOX:"checkbox"
+}
+
 const HCO_STAGE_STATUS = {
     ENROLLING: 'Enrolling'
 }
@@ -222,5 +228,6 @@ module.exports = {
     HCO_STAGE_STATUS,
     HCO_NOTIFICATIONS_TYPE,
     PATIENT_NOTIFICATIONS_TYPE,
-    TP_ACTIONNEEDED_NOTIFICATIONS
+    TP_ACTIONNEEDED_NOTIFICATIONS,
+    QUESTION_TYPES
 };

@@ -67,7 +67,7 @@ const MESSAGES = {
         VISIT_RESPONSE: 'visit-response',
         VISIT_CONFIRMED: 'visit-confirmed',
         CREATE_DP: 'create_dp',
-
+        TP_IS_UNAVAILABLE:"tp-is-unavailable",
         SEND_TRIAL_CONSENT_DSU_TO_HCO: 'send-trial-consent-to-hco',
     },
 
@@ -190,6 +190,7 @@ const TRIAL_PARTICIPANT_STATUS = {
     COMPLETED: "Completed",
     DISCONTINUED: "Discontinued",
     SCREEN_FAILED: "Screen Failed",
+    UNAVAILABLE:"Unavailable",
     WITHDRAWN: 'Withdrawn',
 }
 

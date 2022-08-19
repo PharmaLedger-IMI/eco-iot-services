@@ -221,6 +221,12 @@ const DATE_UTILS = {
     }
 }
 
+const RECRUITING_STAGES = {
+    NOT_YET_RECRUITING: "Not yet recruiting",
+    RECRUITING: "Recruiting",
+    ACTIVE_NOT_RECRUITING: "Active, not recruiting"
+}
+
 module.exports = {
     DATE_UTILS,
     MESSAGES,
@@ -230,5 +236,6 @@ module.exports = {
     HCO_NOTIFICATIONS_TYPE,
     PATIENT_NOTIFICATIONS_TYPE,
     TP_ACTIONNEEDED_NOTIFICATIONS,
-    QUESTION_TYPES
+    QUESTION_TYPES,
+    RECRUITING_STAGES
 };

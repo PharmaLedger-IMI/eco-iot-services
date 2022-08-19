@@ -53,12 +53,6 @@ module.exports = class FileDownloaderService extends DSUService {
         window.URL = window.URL || window.webkitURL;
         let blob = downloadedFile.rawBlob;
 
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            const file = new File([blob], filename);
-            window.navigator.msSaveOrOpenBlob(file);
-            return;
-        }
-
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.download = filename;

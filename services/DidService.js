@@ -1,7 +1,5 @@
 function toHex(input) {
-
-    input = input.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)
-
+    input = Math.abs(input.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0));
     let hash = "",
         alphabet = "0123456789abcdef",
         alphabetLength = alphabet.length;

@@ -124,6 +124,14 @@ const PATIENT_NOTIFICATIONS_TYPE = {
         notificationTitle:"New health data available",
         tagPage:"iot-data-selection",
     },
+    DEVICE_ASSIGNED:{
+        notificationTitle:"A new device was assigned to yourself",
+        tagPage:"iot-data-selection",
+    },
+    DEVICE_UNASSIGNED:{
+        notificationTitle:"A device was unassigned from yourself",
+        tagPage:"iot-data-selection",
+    },
     NEW_INVITATION : {
         notificationTitle:"New research study invitation",
         tagPage:"iot-health-studies",

@@ -9,7 +9,6 @@ const MESSAGES = {
         SITE_STATUS_CHANGED: 'site-status-change',
         UPDATE_BASE_PROCEDURES: 'update-base-procedures',
         ADD_SITE : 'add-site',
-        ASQ_QUESTION: 'ask-question',
         ADD_TRIAl_CONSENT : 'add-trial-consent',
         ADD_PATIENT_TO_TRIAL: 'add-to-trial',
         // NEW MESSAGES
@@ -40,7 +39,6 @@ const MESSAGES = {
                 ADD_TO_TRIAL: 'add-to-trial',
                 SCHEDULE_VISIT: 'schedule_visit',
                 UPDATE_TP_NUMBER: 'update-tpNumber',
-                QUESTION_RESPONSE: 'question_response',
                 UPDATE_VISIT: 'update_visit',
                 VISIT_RESPONSE: 'visit-response',
                 VISIT_CONFIRMED: 'visit_confirmed',
@@ -62,7 +60,6 @@ const MESSAGES = {
         ADD_TRIAL_SUBJECT: 'add-trial-subject',
         SCHEDULE_VISIT: 'schedule-visit',
         UPDATE_TP_NUMBER: 'update_tpNumber',
-        QUESTION_RESPONSE: 'question_response',
         UPDATE_VISIT: 'update_visit',
         VISIT_RESPONSE: 'visit-response',
         VISIT_CONFIRMED: 'visit-confirmed',
@@ -154,11 +151,7 @@ const PATIENT_NOTIFICATIONS_TYPE = {
     CLINICAL_SITE_QUESTIONNAIRE: {
         notificationTitle :"Received a new questionnaire",
         tagPage:"task-calendar",
-    },
-    QUESTION_RESPONSE: {
-        notificationTitle :"New questionnaire response",
-        tagPage:"task-calendar",
-    },
+    }
 }
 
 const HCO_NOTIFICATIONS_TYPE = {
@@ -174,8 +167,8 @@ const HCO_NOTIFICATIONS_TYPE = {
     MILESTONES_REMINDERS : {
         notificationTitle:"Milestones Reminders",
     },
-    TRIAL_SUBJECT_QUESTIONS : {
-        notificationTitle: "Trial Subject Questions",
+    TRIAL_SUBJECT_QUESTIONNAIRE_RESPONSES : {
+        notificationTitle: "Patient questionnaire response",
     },
 }
 

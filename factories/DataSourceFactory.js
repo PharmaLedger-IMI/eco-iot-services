@@ -37,6 +37,13 @@ class DataSourceFactory {
 
     static createDataSource(noOfColumns,itemsPerPage, data) { 
         const tableDataSource = new TableDataSource(data);
+
+        tableDataSource.updateTable = function (newData) {
+            this.model.tableData = newData;
+            this.getElement().dataSize = newData.length;
+            this.forceUpdate(true);
+        }
+
         tableDataSource.setDataSourcePageSize(itemsPerPage);
         tableDataSource.setNumberOfColumns(noOfColumns);
         return tableDataSource;

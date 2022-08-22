@@ -94,7 +94,8 @@ const ECO_STATUSES = {
     TO_BE_SIGNED: 'Acknowledgement required',
     WITHDRAW: 'TP Withdrawed',
     CONTACT: 'Reconsent required',
-    DECLINED: 'TP Declined'
+    DECLINED: 'TP Declined',
+    DECLINED_OPTIONAL: 'TP Declined Optional'
 }
 
 const PATIENT_NOTIFICATIONS_TYPE = {
@@ -199,6 +200,9 @@ const TP_ACTIONNEEDED_NOTIFICATIONS = {
     TP_VISIT_CONFIRMED: 'tp-visit-confirmed',
     TP_VISIT_RESCHEDULED: "visit-rescheduled",
     VISIT_CONFIRMED: 'visit-confirmed',
+    TP_WITHDRAWN: 'Tp Withdrawn',
+    TP_DECLINED: 'TP Declined',
+    TP_DECLINED_OPTIONAL: 'TP Declined Optional'
 }
 
 const QUESTION_TYPES = {

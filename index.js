@@ -12,7 +12,6 @@ module.exports = {
     BaseRepository: require("./repositories/BaseRepository"),
     Constants: require("./utils/Constants"),
     momentService: require('./utils/moment.min'),
-    FileDownloader: require("./utils/FileDownloader"),
     FileDownloaderService: require("./utils/FileDownloaderService"),
     HeaderController: require("./utils/HeaderController"),
     EvidenceService:require("./services/iot/EvidenceService"),

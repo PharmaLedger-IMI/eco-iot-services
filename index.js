@@ -13,6 +13,7 @@ module.exports = {
     Constants: require("./utils/Constants"),
     momentService: require('./utils/moment.min'),
     FileDownloaderService: require("./utils/FileDownloaderService"),
+    PDFService: require("./utils/PDFService"),
     HeaderController: require("./utils/HeaderController"),
     EvidenceService:require("./services/iot/EvidenceService"),
     DeviceServices: require("./services/iot/DeviceServices"),

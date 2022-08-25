@@ -5,7 +5,7 @@ const MESSAGES = {
         ADD_CONSENT_VERSION: 'add-econsent-version',
         ADD_CONSENT : 'add-site-consent',
         DELETE_TRIAL : 'delete-trial',
-        UPDATE_ECOSENT : 'update-econsent',
+        UPDATE_ECONSENT : 'update-econsent',
         SITE_STATUS_CHANGED: 'site-status-change',
         UPDATE_BASE_PROCEDURES: 'update-base-procedures',
         ADD_SITE : 'add-site',
@@ -69,10 +69,10 @@ const MESSAGES = {
     },
 
     SPONSOR :{
-        SIGN_ECOSENT : 'sign-econsent',
-        DECLINE_ECOSENT : 'decline-econsent',
+        SIGN_ECONSENT : 'sign-econsent',
+        DECLINE_ECONSENT : 'decline-econsent',
         ADD_CONSENT_VERSION:"add-econsent-version",
-        UPDATE_ECOSENT: 'update-econsent',
+        UPDATE_ECONSENT: 'update-econsent',
         UPDATE_SITE_STATUS: 'update-site-status',
         UPDATE_SITE: 'update-site',
         TP_ADDED:"tp-added",

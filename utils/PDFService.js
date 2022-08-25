@@ -1,5 +1,6 @@
 const DSUService = require('../services/DSUService.js');
 const FileDownloaderService = require('./FileDownloaderService.js');
+const {getDidServiceInstance} = require("../services/DidService.js");
 
 class PDFService extends DSUService {
     constructor(DSUStorage) {
@@ -7,6 +8,7 @@ class PDFService extends DSUService {
 
         this.DSUStorage = DSUStorage;
         this.fileDownloaderService = new FileDownloaderService(DSUStorage);
+        this.DidServiceInstance = getDidServiceInstance();
 
         this.pdfModel = {
             currentPage: 1,
@@ -36,6 +38,24 @@ class PDFService extends DSUService {
         }
         this.pdfModel = {...this.pdfModel, ...options};
 
+        await this._preparePdfFile(filePath, fileName);
+        const pdfData = await this.asyncMyFunction(this._loadPdfFile, []);
+        this._initPDF(pdfData);
+    };
+
+    async applyDigitalSignature(signatureOptions) {
+        const {path, version, signatureAuthor, signatureDate, existingSignatures} = signatureOptions
+        if (!this.blob) {
+            await this._preparePdfFile(path, version);
+        }
+
+        const pdfData = await this.asyncMyFunction(this._loadPdfFile, []);
+        const signatureDid = await this.DidServiceInstance.getDID();
+
+        return await this._signPDF(pdfData, [signatureDid, signatureAuthor, signatureDate], existingSignatures);
+    }
+
+    async _preparePdfFile(filePath, fileName) {
         await this.fileDownloaderService.prepareDownloadFromDsu(filePath, fileName);
         let fileBlob = this.fileDownloaderService.getFileBlob(fileName);
         this.rawBlob = fileBlob.rawBlob;
@@ -43,16 +63,14 @@ class PDFService extends DSUService {
         this.blob = new Blob([this.rawBlob], {
             type: this.mimeType,
         });
+    }
 
-        this._loadPdfOrTextFile();
-    };
-
-    _loadPdfOrTextFile() {
+    _loadPdfFile(callback) {
         const reader = new FileReader();
         reader.readAsDataURL(this.blob);
         reader.onloadend = () => {
             let base64data = reader.result;
-            this._initPDF(base64data.substr(base64data.indexOf(',') + 1));
+            callback(undefined, base64data.substr(base64data.indexOf(',') + 1));
         };
     };
 
@@ -108,6 +126,50 @@ class PDFService extends DSUService {
 
         checkOffset(pdfWrapper);
     };
+
+    async _signPDF(base64PdfData, signatureLines, existingSignatures = 0) {
+        const {PDFDocument, rgb, StandardFonts} = PDFLib
+        const pdfDoc = await PDFDocument.load(base64PdfData);
+        const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const pages = pdfDoc.getPages();
+        const lastPage = pages[pages.length - 1];
+
+        const signatureRowGap = 50;
+        const textSize = 10
+        const lineHeight = textSize + 2;
+        const offsetX = 35;
+        const offsetY = 50 + (signatureRowGap * existingSignatures);
+        const paddingX = 5;
+        const paddingY = 5;
+
+        let maxLengthIndex = 0;
+        signatureLines.forEach((line, lineIndex) => {
+            if (line.length > signatureLines[maxLengthIndex]) {
+                maxLengthIndex = lineIndex;
+            }
+
+            lastPage.drawText(line, {
+                x: offsetX,
+                y: offsetY + (lineHeight * lineIndex),
+                size: textSize,
+                font: helveticaFont,
+                color: rgb(0, 135 / 255, 152 / 255)
+            });
+        });
+
+        const textWidth = helveticaFont.widthOfTextAtSize(signatureLines[maxLengthIndex], textSize);
+        const textHeight = helveticaFont.heightAtSize(textSize);
+        lastPage.drawRectangle({
+            x: offsetX - paddingX,
+            y: offsetY - paddingY,
+            width: textWidth + (paddingY * 2),
+            height: (textHeight * signatureLines.length) + (paddingX * 2),
+            borderWidth: 1,
+            borderColor: rgb(0, 135 / 255, 152 / 255)
+        });
+
+        return await pdfDoc.save();
+    }
 }
 
 module.exports = PDFService;

@@ -1,12 +1,14 @@
 const opendsu = require('opendsu');
 const storage = opendsu.loadApi('storage');
 const resolver = opendsu.loadAPI('resolver');
+const SharedStorage = require("../services/SharedStorage.js");
 const keySSISpace = opendsu.loadAPI('keyssi');
 class DSUService {
   PATH = '/';
 
   constructor(path = this.PATH) {
     this.DSUStorage = storage.getDSUStorage();
+    this.storageService = SharedStorage.getSharedStorage(this.DSUStorage);
     this.PATH = path;
   }
 
@@ -284,12 +286,12 @@ class DSUService {
     });
   };
 
-  cloneDSU = (fromDSUSSI, toDSUPath, callback) => {
+  cloneDSU = (tpUid, fromDSUSSI, toDSUPath, callback) => {
     this.createDSUAndMount(toDSUPath, (err, keySSI) => {
       if (err) {
         return callback(err);
       }
-      this.copyDSU(fromDSUSSI, keySSI, (err, copiedFiles) => {
+      this.copyDSU(tpUid, fromDSUSSI, keySSI, (err, copiedFiles) => {
         if (err) {
           return callback(err);
         }
@@ -302,7 +304,7 @@ class DSUService {
     });
   };
 
-  copyDSU = (fromDSUSSI, toDSUSSI, callback) => {
+  copyDSU = (tpUid, fromDSUSSI, toDSUSSI, callback) => {
     const resolver = opendsu.loadAPI('resolver');
     resolver.loadDSU(fromDSUSSI, { skipCache: true }, (err, fromDSU) => {
       if (err) {
@@ -326,8 +328,8 @@ class DSUService {
                 data = JSON.parse(data.toString());
                 data.genesisUid = data.uid;
                 data.uid = this.getAnchorId(toDSUSSI);
-                data.KeySSI = toDSUSSI;
                 data.keySSI = toDSUSSI;
+                data.tpUid = tpUid;
                 data = JSON.stringify(data);
               }
               toDSU.writeFile(file, data, (err) => {
@@ -348,6 +350,17 @@ class DSUService {
       });
     });
   };
+
+
+  cancelBatchOnError(error, callback) {
+    this.storageService.cancelBatch((err) => {
+      if (err) {
+        console.error(err);
+      }
+
+      callback(error);
+    });
+  }
 
   copyFile(path, destination, callback) {
     this.readFile(path,(err,data) => {

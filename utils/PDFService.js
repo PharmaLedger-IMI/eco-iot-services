@@ -44,15 +44,18 @@ class PDFService extends DSUService {
     };
 
     async applyDigitalSignature(signatureOptions) {
-        const {path, version, signatureAuthor, signatureDate, existingSignatures} = signatureOptions
+        let {path, version, signatureAuthor, signatureDate, signatureDid, isRightSide} = signatureOptions
         if (!this.blob) {
             await this._preparePdfFile(path, version);
         }
 
         const pdfData = await this.asyncMyFunction(this._loadPdfFile, []);
-        const signatureDid = await this.DidServiceInstance.getDID();
+        if (!signatureDid) {
+            signatureDid = await this.DidServiceInstance.getDID();
+        }
 
-        return await this._signPDF(pdfData, [signatureDid, signatureAuthor, signatureDate], existingSignatures);
+        const signedPdfBuffer = await this._signPDF(pdfData, [signatureDid, signatureAuthor, signatureDate], isRightSide);
+        await this.writeFileAsync(`${path}/${version}`, $$.Buffer.from(signedPdfBuffer));
     }
 
     async _preparePdfFile(filePath, fileName) {
@@ -127,18 +130,18 @@ class PDFService extends DSUService {
         checkOffset(pdfWrapper);
     };
 
-    async _signPDF(base64PdfData, signatureLines, existingSignatures = 0) {
+    async _signPDF(base64PdfData, signatureLines, isRightSide = false) {
         const {PDFDocument, rgb, StandardFonts} = PDFLib
         const pdfDoc = await PDFDocument.load(base64PdfData);
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
         const pages = pdfDoc.getPages();
         const lastPage = pages[pages.length - 1];
+        const {width} = lastPage.getSize();
 
-        const signatureRowGap = 50;
-        const textSize = 10
+        const textSize = 10;
         const lineHeight = textSize + 2;
-        const offsetX = 35;
-        const offsetY = 50 + (signatureRowGap * existingSignatures);
+        const offsetX = 40 + (isRightSide ? (width / 2 + 30) : 0);
+        const offsetY = 60;
         const paddingX = 5;
         const paddingY = 5;
 
@@ -163,7 +166,7 @@ class PDFService extends DSUService {
             x: offsetX - paddingX,
             y: offsetY - paddingY,
             width: textWidth + (paddingY * 2),
-            height: (textHeight * signatureLines.length) + (paddingX * 2),
+            height: (textHeight * signatureLines.length) + (paddingX * 2.5),
             borderWidth: 1,
             borderColor: rgb(0, 135 / 255, 152 / 255)
         });

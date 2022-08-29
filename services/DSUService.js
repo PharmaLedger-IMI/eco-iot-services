@@ -383,10 +383,10 @@ class DSUService {
     });
   }
 
-  writeFile(path, filebuffer, callback) {
+  writeFile(path, fileBuffer, callback) {
     [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
     this.letDSUStorageInit().then(() => {
-      this.DSUStorage.writeFile(path, filebuffer, (err, data) => {
+      this.DSUStorage.writeFile(path, fileBuffer, (err, data) => {
         if (err) {
           return callback(err, undefined);
         }
@@ -397,6 +397,10 @@ class DSUService {
 
   async readFileAsync(path) {
     return this.asyncMyFunction(this.readFile, [...arguments]);
+  }
+
+  async writeFileAsync(path, fileBuffer) {
+    return this.asyncMyFunction(this.writeFile, [...arguments]);
   }
 
   getEntityPath(keySSI, pathPrefix, callback) {

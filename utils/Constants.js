@@ -90,7 +90,6 @@ const MESSAGES = {
 const ECO_STATUSES = {
     TO_BE_SIGNED: 'Acknowledgement required',
     WITHDRAWN: 'TP Withdrawn',
-    CONTACT: 'Reconsent required',
     DECLINED: 'TP Declined',
     DECLINED_OPTIONAL: 'TP Declined Optional'
 }

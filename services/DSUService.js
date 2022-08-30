@@ -415,6 +415,27 @@ class DSUService {
     });
   }
 
+  getMountedSSI(dsuUid, pathPrfix, callback) {
+
+    if (typeof pathPrfix === "function") {
+      callback = pathPrfix;
+      pathPrfix = "/";
+    }
+    let searchedPath = this.PATH + "/" + dsuUid;
+    if (searchedPath[0] === "/") {
+      searchedPath = searchedPath.substring(1);
+    }
+    this.DSUStorage.listMountedDSUs(pathPrfix, (err, dsuList) => {
+      if (err) {
+        return callback(err);
+      }
+
+      const mountedDSU = dsuList.find(item => item.path === searchedPath);
+      callback(undefined, mountedDSU.identifier);
+    })
+  }
+
+
   async getEntityPathAsync(knownIdentifier, pathPrefix) {
     return this.asyncMyFunction(this.getEntityPath, [...arguments]);
   }

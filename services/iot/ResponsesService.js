@@ -24,11 +24,11 @@ class ResponsesService extends DSUService {
 
             });
         }
-        this.saveEntity(response, (err, data) => {
+        this.saveEntity(response, (err, responses) => {
             if (err) {
                 return callback(err);
             }
-            callback(undefined, data.sReadSSI);
+            callback(undefined, responses.sReadSSI);
         });
     }
 

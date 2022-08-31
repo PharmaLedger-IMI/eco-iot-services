@@ -10,16 +10,16 @@ class ResponsesService extends DSUService {
 
     saveResponse(response,callback) {
         if (response.uid) {
-            return this.updateEntity(response, (err, data) => {
+            return this.updateEntity(response, (err, responses) => {
                 if (err) {
                     return callback(err);
                 }
-                this.getMountedSSI(data.uid, (err, test) => {
+                this.getMountedSSI(responses.uid, (err, responsesIdentifier) => {
                     if (err) {
                         return callback(err);
                     }
-                    const profilesReadSSI = this.getSReadSSI(test);
-                    callback(undefined, profilesReadSSI);
+                    const responsesReadSSI = this.getSReadSSI(responsesIdentifier);
+                    callback(undefined, responsesReadSSI);
                 })
 
             });

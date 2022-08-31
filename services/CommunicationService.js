@@ -45,7 +45,8 @@ class CommunicationService {
 
     createOrLoadIdentity() {
         const sc = scAPI.getSecurityContext();
-        sc.on("initialised", () => {
+
+        const resolveDid = async() => {
             let didService = DidService.getDidServiceInstance();
             didService.getEnvironmentData().then(async (envData) => {
                 this.environmentData = envData;
@@ -63,7 +64,13 @@ class CommunicationService {
             }).catch((e) => {
                 console.error(e);
             });
-        });
+        };
+
+        if (sc.isInitialised()) {
+            resolveDid();
+        } else {
+            sc.on('initialised', resolveDid);
+        }
     }
 
     async loadOptionalIdentity(optionalDid) {
@@ -166,6 +173,7 @@ class CommunicationService {
 
         this.didDocument.readMessage((err, decryptedMessage) => {
             if (err) {
+                console.log(err);
                 if (this.establishedConnectionCheckId) {
                     clearTimeout(this.establishedConnectionCheckId);
                 }

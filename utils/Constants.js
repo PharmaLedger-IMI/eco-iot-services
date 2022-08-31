@@ -66,6 +66,8 @@ const MESSAGES = {
         CREATE_DP: 'create_dp',
         TP_IS_UNAVAILABLE:"tp-is-unavailable",
         SEND_TRIAL_CONSENT_DSU_TO_HCO: 'send-trial-consent-to-hco',
+        TP_CONTACT_DATA: 'tp-profile-data',
+        QUESTIONNAIRE_RESPONSE:'questionnaire-responses',
     },
 
     SPONSOR :{

@@ -43,8 +43,26 @@ class DSUService {
     });
   }
 
+  async readDsuDataAsync(ssi) {
+    return await this.asyncMyFunction(this.readDsuData, [...arguments]);
+  }
+
+  readDsuData(ssi, callback) {
+    resolver.loadDSU(ssi, (err, dsu) => {
+      if (err) {
+        return callback(err);
+      }
+      dsu.readFile('/data.json', (err, content) => {
+        if (err) {
+          return callback(err, undefined);
+        }
+        let entity = JSON.parse(content.toString());
+        callback(undefined,entity);
+      });
+    });
+  }
+
   readDSUsData(dsuList, callback){
-    const resolver = opendsu.loadAPI('resolver');
     let entities = [];
     let getServiceDsu = (dsuItem) => {
       let objectName = this.PATH.substring(1);
@@ -113,7 +131,6 @@ class DSUService {
 
   createDSUAndMount(path, callback) {
     [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
-    const resolver = opendsu.loadAPI('resolver');
     const keySSISpace = opendsu.loadAPI('keyssi');
     const config = opendsu.loadAPI('config');
 
@@ -305,7 +322,6 @@ class DSUService {
   };
 
   copyDSU = (tpUid, fromDSUSSI, toDSUSSI, callback) => {
-    const resolver = opendsu.loadAPI('resolver');
     resolver.loadDSU(fromDSUSSI, { skipCache: true }, (err, fromDSU) => {
       if (err) {
         return callback(err);

@@ -70,25 +70,21 @@ class DSUService {
       if (itemPathSplit.length > 1) {
         objectName = itemPathSplit[0];
       }
-      resolver.loadDSU(dsuItem.identifier, (err, dsu) => {
-        if (err) {
-          return callback(err);
-        }
-        dsu.readFile('/data.json', (err, content) => {
-          if (err) {
-            entities.slice(0);
-            return callback(err, undefined);
-          }
-          let entity = JSON.parse(content.toString());
-          entity.objectName = objectName;
-          entities.push(entity);
 
-          if (dsuList.length === 0) {
-            return callback(undefined, entities);
-          }
-          getServiceDsu(dsuList.shift());
-        });
-      });
+      this.readDsuData(dsuItem.identifier,(err, entity)=>{
+        if (err) {
+          entities.slice(0);
+          return callback(err, undefined);
+        }
+        entity.objectName = objectName;
+        entities.push(entity);
+
+        if (dsuList.length === 0) {
+          return callback(undefined, entities);
+        }
+        getServiceDsu(dsuList.shift());
+      })
+
     };
     if (dsuList.length === 0) {
       return callback(undefined, []);

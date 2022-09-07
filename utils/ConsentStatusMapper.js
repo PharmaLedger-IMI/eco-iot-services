@@ -8,13 +8,6 @@ class ConsentStatusMapper {
             displayValue: 'Consent Required',
             isSet: false,
         },
-        entered: {
-            name: 'Entered',
-            valueNumber: 2,
-            details: 'Main Consent Signed',
-            displayValue: 'Entered',
-            isSet: false,
-        },
         enrolled: {
             name: 'Enrolled',
             valueNumber: 3,

@@ -25,9 +25,8 @@ class DeviceServices extends DSUService {
         this.updateEntity(device, callback);
     }
 
-    deleteDevice(device, callback) {
-        console.log("delete device WIP!")
-    }
+    getDevice = (uid, callback) => this.getEntity(uid, callback);
+
 }
 
 module.exports = DeviceServices;

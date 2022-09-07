@@ -20,6 +20,7 @@ const MESSAGES = {
         VISIT_SCHEDULED: 'schedule_visit',
         VISIT_CONFIRMED: 'visit_confirmed',
         NEW_HEALTHDATA: "new_healthdata",
+        ADD_DEVICE:"add_device",
         DEVICE_ASSIGNATION: 'device_assignation',
         DEVICE_DEASSIGNATION: 'device_deassignation',
 

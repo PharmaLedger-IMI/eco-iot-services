@@ -16,6 +16,7 @@ module.exports = {
     PDFService: require("./utils/PDFService"),
     HeaderController: require("./utils/HeaderController"),
     EvidenceService:require("./services/iot/EvidenceService"),
+    FeedbackService: require("./services/iot/FeedbackService"),
     DeviceServices: require("./services/iot/DeviceServices"),
     QuestionnaireService: require("./services/iot/QuestionnaireService"),
     DeviceAssignationService: require("./services/iot/DeviceAssignationService"),

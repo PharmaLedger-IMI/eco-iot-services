@@ -113,15 +113,15 @@ const PATIENT_NOTIFICATIONS_TYPE = {
     },
     NEW_FEEDBACK : {
         notificationTitle:"New feedback",
-        tagPage:"completed-studies",
+        tagPage:"iot-health-studies",
     },
     NEW_EVIDENCE : {
         notificationTitle:"New evidence",
-        tagPage:"completed-studies",
+        tagPage:"iot-health-studies",
     },
     NEW_STUDY : {
         notificationTitle:"New study",
-        tagPage:"completed-studies",
+        tagPage:"iot-health-studies",
     },
     NEW_HEALTHDATA : {
         notificationTitle:"New health data available",

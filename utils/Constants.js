@@ -86,7 +86,7 @@ const MESSAGES = {
 
     RESEARCHER: {
         NEW_FEEDBACK: 'new_feedback',
-        NEW_EVIDENCE:"new_evidence",
+        NEW_RESULT:"new_result",
     }
 
 }
@@ -115,8 +115,8 @@ const PATIENT_NOTIFICATIONS_TYPE = {
         notificationTitle:"New feedback",
         tagPage:"iot-health-studies",
     },
-    NEW_EVIDENCE : {
-        notificationTitle:"New evidence",
+    NEW_RESULT : {
+        notificationTitle:"New result",
         tagPage:"iot-health-studies",
     },
     NEW_STUDY : {

@@ -15,7 +15,7 @@ module.exports = {
     FileDownloaderService: require("./utils/FileDownloaderService"),
     PDFService: require("./utils/PDFService"),
     HeaderController: require("./utils/HeaderController"),
-    EvidenceService:require("./services/iot/EvidenceService"),
+    ResultsService:require("./services/iot/ResultsService"),
     FeedbackService: require("./services/iot/FeedbackService"),
     DeviceServices: require("./services/iot/DeviceServices"),
     QuestionnaireService: require("./services/iot/QuestionnaireService"),

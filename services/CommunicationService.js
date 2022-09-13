@@ -3,9 +3,9 @@ const w3cDID = opendsu.loadAPI('w3cdid');
 const scAPI = opendsu.loadAPI("sc");
 const DidService = require("./DidService");
 const messageQueueServiceInstance = require("./MessageQueueService");
-const MAX_RECONNECTION_ATTEMPTS = 5;
+const MAX_RECONNECTION_ATTEMPTS = 100;
 const INITIAL_CONNECTION_DELAY = 1000;
-const MAX_RECONNECT_DELAY = INITIAL_CONNECTION_DELAY * 30;
+const MAX_RECONNECT_DELAY = INITIAL_CONNECTION_DELAY * 60;
 
 function getIotAdaptorEndpoint(endpoint) {
     return endpoint + "/iotAdapter/adaptorIdentity/";
@@ -194,11 +194,11 @@ class CommunicationService {
                             this.connectionDelay = INITIAL_CONNECTION_DELAY;
                             this.reconnectionAttempts = 0;
                             console.log("[MQ] Reconnecting was successfully ...")
-                        }, MAX_RECONNECT_DELAY)
+                        }, this.connectionDelay*2)
 
                     }, this.connectionDelay);
                 } else {
-                    callback(new Error('Unexpected error occurred. Please refresh your application'));
+                    callback(new Error('Unexpected error occurred. Give up reconnecting...  Please refresh your application'));
                 }
             } else {
                 messageQueueServiceInstance.addCallback(async () => {

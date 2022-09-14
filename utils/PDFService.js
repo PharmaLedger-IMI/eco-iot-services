@@ -44,7 +44,7 @@ class PDFService extends DSUService {
     };
 
     async applyDigitalSignature(signatureOptions) {
-        let {path, version, signatureAuthor, signatureDate, signatureDid, isRightSide} = signatureOptions
+        let {path, version, signatureAuthor, signatureDate, signatureDid, isBottomSide} = signatureOptions
         if (!this.blob) {
             await this._preparePdfFile(path, version);
         }
@@ -54,7 +54,7 @@ class PDFService extends DSUService {
             signatureDid = await this.DidServiceInstance.getDID();
         }
 
-        const signedPdfBuffer = await this._signPDF(pdfData, [signatureDid, signatureAuthor, signatureDate], isRightSide);
+        const signedPdfBuffer = await this._signPDF(pdfData, [signatureDid, signatureAuthor, signatureDate], isBottomSide);
         await this.writeFileAsync(`${path}/${version}`, $$.Buffer.from(signedPdfBuffer));
     }
 
@@ -130,18 +130,17 @@ class PDFService extends DSUService {
         checkOffset(pdfWrapper);
     };
 
-    async _signPDF(base64PdfData, signatureLines, isRightSide = false) {
+    async _signPDF(base64PdfData, signatureLines, isBottomSide = false) {
         const {PDFDocument, rgb, StandardFonts} = PDFLib
         const pdfDoc = await PDFDocument.load(base64PdfData);
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
         const pages = pdfDoc.getPages();
         const lastPage = pages[pages.length - 1];
-        const {width} = lastPage.getSize();
 
         const textSize = 10;
         const lineHeight = textSize + 2;
-        const offsetX = 40 + (isRightSide ? (width / 2 + 30) : 0);
-        const offsetY = 60;
+        const offsetX = 40;
+        const offsetY = 100 + (isBottomSide ? - 45 : 0);
         const paddingX = 5;
         const paddingY = 5;
 

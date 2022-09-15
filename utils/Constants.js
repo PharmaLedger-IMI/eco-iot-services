@@ -186,7 +186,6 @@ const HCO_NOTIFICATIONS_TYPE = {
 
 const TRIAL_PARTICIPANT_STATUS = {
     ENROLLED: 'Enrolled',
-    WITHDRAW: 'Withdrawed',
     DECLINED: 'Declined',
     TP_WITHDRAWN: 'Withdraw Intention',
     SCREENED: 'Screened',
@@ -197,6 +196,7 @@ const TRIAL_PARTICIPANT_STATUS = {
     SCREEN_FAILED: "Screen Failed",
     UNAVAILABLE:"Unavailable",
     WITHDRAWN: 'Withdrawn',
+    IN_TREATMENT: 'In Treatment'
 }
 
 const TP_ACTIONNEEDED_NOTIFICATIONS = {

@@ -87,6 +87,14 @@ const MESSAGES = {
     RESEARCHER: {
         NEW_FEEDBACK: 'new_feedback',
         NEW_RESULT:"new_result",
+        NEW_STUDY: "new_study",
+        DATA_MATCH_MAKING: "datamatchmaking",
+        ADD_DYNAMIC_PERMISSION: "dp_updated_add",
+        REMOVE_DYNAMIC_PERMISSION: "dp_updated_remove",
+        REJECT_DYNAMIC_PERMISSION: "dp_updated_reject",
+        ADD_PARTICIPANTS_TO_STUDY: "add_participants_to_study",
+        REMOVE_PARTICIPANTS_FROM_STUDY: "remove_participants_from_study",
+        REJECT_PARTICIPANTS_FROM_STUDY: "reject_participants_from_study"
     }
 
 }

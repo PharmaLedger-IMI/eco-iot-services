@@ -94,7 +94,8 @@ const MESSAGES = {
         REJECT_DYNAMIC_PERMISSION: "dp_updated_reject",
         ADD_PARTICIPANTS_TO_STUDY: "add_participants_to_study",
         REMOVE_PARTICIPANTS_FROM_STUDY: "remove_participants_from_study",
-        REJECT_PARTICIPANTS_FROM_STUDY: "reject_participants_from_study"
+        REJECT_PARTICIPANTS_FROM_STUDY: "reject_participants_from_study",
+        COMMUNICATE_STUDY_DATA_MATCHMAKING: "communicate_study_data_matchmaking"
     }
 
 }

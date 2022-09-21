@@ -3,6 +3,10 @@ const FileDownloaderService = require('./FileDownloaderService.js');
 const {getDidServiceInstance} = require("../services/DidService.js");
 
 class PDFService extends DSUService {
+    touchListenersLoaded = false;
+    canvases = [];
+    targetIdx = null;
+
     constructor(DSUStorage) {
         super();
 
@@ -97,21 +101,91 @@ class PDFService extends DSUService {
         );
     };
 
-    _handlePages(thePDF, page) {
-        const scale = this.pdfModel.scale || 1.5;
+    async changeScale(scale) {
+        const pdf = await this.loadingTask.promise;
+        this.pdfModel.currentPage = 1;
+        const page = await pdf.getPage(1);
+        const promise = new Promise((resolve, reject) => {
+            this._handlePages(pdf, page, scale, () => resolve());
+        })
+        return promise;
+    }
+
+    _initPinchAndZoom() {
+        if (this.touchListenersLoaded) return;
+        this.touchListenersLoaded = true;
+        const el = document.getElementById("pdf-wrapper");
+
+        let startX = 0, startY = 0;
+        let initialPinchDistance = 0;        
+        let pinchScale = 1;    
+        
+        const viewer = document.getElementById("canvas-parent");
+        const reset = () => { startX = startY = initialPinchDistance = 0; pinchScale = 1; };
+
+        // Prevent native iOS page zoom
+        //document.addEventListener("touchmove", (e) => { if (e.scale !== 1) { e.preventDefault(); } }, { passive: false });
+
+        el.addEventListener("touchstart", (e) => {
+            if (e.touches.length > 1) {
+                startX = (e.touches[0].pageX + e.touches[1].pageX) / 2;
+                startY = (e.touches[0].pageY + e.touches[1].pageY) / 2;
+                initialPinchDistance = Math.hypot((e.touches[1].pageX - e.touches[0].pageX), (e.touches[1].pageY - e.touches[0].pageY));
+            } else {
+                initialPinchDistance = 0;
+            }
+        });
+        el.addEventListener("touchmove", (e) => {
+            const container = e.path[0];
+            this.targetIdx = this.canvases.findIndex(x => x === container);
+            if (initialPinchDistance <= 0 || e.touches.length < 2) { return; }
+            if (e.scale !== 1) { e.preventDefault(); }
+            const pinchDistance = Math.hypot((e.touches[1].pageX - e.touches[0].pageX), (e.touches[1].pageY - e.touches[0].pageY));
+            const originX = startX + container.scrollLeft;
+            const originY = startY + container.scrollTop;
+            pinchScale = pinchDistance / initialPinchDistance;
+            viewer.style.transform = `scale(${pinchScale })`;
+            viewer.style.transformOrigin = `${originX}px ${originY}px`;
+        }, { passive: false });
+        el.addEventListener("touchend", async (e) => {
+            
+            if (initialPinchDistance <= 0) { return; }
+            viewer.style.transform = `none`;
+            viewer.style.transformOrigin = `unset`;
+            this.changeScale(pinchScale);
+            const container = document.getElementById('canvas-parent');
+            const child = container.children.item(0);
+            const rect = container.getBoundingClientRect();
+            const dx = startX - rect.left;
+            const dy = startY - rect.top + this.targetIdx * child.getBoundingClientRect().height;
+            container.scrollLeft += dx * (pinchScale - 1);
+            container.scrollTop += dy * (pinchScale - 1);
+            reset();
+        });
+    }
+
+    _handlePages(thePDF, page, manualScale, callback) {
+        const scale = manualScale ? manualScale : this.pdfModel.scale || 1.2;
         const viewport = page.getViewport({scale: scale});
-        let canvas = document.createElement('canvas');
+        let canvas =  document.createElement('canvas');
         canvas.style.display = 'block';
         let context = canvas.getContext('2d');
         canvas.height = viewport.height;
         canvas.width = viewport.width;
         page.render({canvasContext: context, viewport: viewport});
-        document.getElementById('canvas-parent').appendChild(canvas);
+        const parent = document.getElementById('canvas-parent');
+        if (this.canvases[this.pdfModel.currentPage - 1]) {
+            parent.replaceChild(canvas, this.canvases[this.pdfModel.currentPage - 1]);
+            this.canvases[this.pdfModel.currentPage - 1] = parent.children.item(this.pdfModel.currentPage - 1);
+
+        } else {
+            this.canvases.push(parent.appendChild(canvas));
+        }
 
         this.pdfModel.currentPage = this.pdfModel.currentPage + 1;
         let currPage = this.pdfModel.currentPage;
         if (thePDF !== null && currPage <= this.pdfModel.pagesNo) {
-            thePDF.getPage(currPage).then((result) => this._handlePages(thePDF, result));
+            thePDF.getPage(currPage).then((result) => this._handlePages(thePDF, result, scale, callback));
         }
 
         const pdfWrapper = document.getElementById("pdf-wrapper");
@@ -128,6 +202,10 @@ class PDFService extends DSUService {
         }, {capture: true});
 
         checkOffset(pdfWrapper);
+        this._initPinchAndZoom();
+        if (thePDF !== null && currPage > this.pdfModel.pagesNo && callback) {
+            callback();
+        }
     };
 
     async _signPDF(base64PdfData, signatureLines, isBottomSide = false) {

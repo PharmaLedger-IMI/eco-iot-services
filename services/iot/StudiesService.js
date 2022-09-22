@@ -11,6 +11,8 @@ class StudiesService extends DSUService {
 
     mount = (keySSI, callback) => this.mountEntity(keySSI, callback);
 
+    unMount = (uid, callback) => this.unMount(uid, callback);
+
     getStudies = (callback) => this.getEntities(callback);
 
     getStudy = (uid, callback) => this.getEntity(uid, callback);

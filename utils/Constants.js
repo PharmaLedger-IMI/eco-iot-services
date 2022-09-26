@@ -235,7 +235,7 @@ const DATE_UTILS = {
         HourFormatPattern: "HH:mm",
         DateTimeFormatPattern: 'DD-MMM-YYYY, HH:mm',
         YearMonthPattern:  'YYYY-MM',
-        EN_GB: 'en-GB',
+        EN_UK: 'en-UK',
     }
 }
 

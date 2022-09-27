@@ -233,10 +233,10 @@ const DATE_UTILS = {
         YearMonthDayPattern: "YYYY-MM-DD",
         YMDDateTimeFormatPattern: 'YYYY-MM-DD',
         HourFormatPattern: "HH:mm",
-        DateTimeFormatPattern: 'DD-MMM-YYYY, HH:mm',
+        DateTimeFormatPattern: 'DD/MM/YYYY, HH:mm',
         YearMonthPattern:  'YYYY-MM',
-        EN_UK: 'en-UK',
-    }
+    },
+    DATE_LOCALE: 'en-UK',
 }
 
 const RECRUITING_STAGES = {

@@ -95,7 +95,7 @@ const MESSAGES = {
         ADD_PARTICIPANTS_TO_STUDY: "add_participants_to_study",
         REMOVE_PARTICIPANTS_FROM_STUDY: "remove_participants_from_study",
         REJECT_PARTICIPANTS_FROM_STUDY: "reject_participants_from_study",
-        COMMUNICATE_STUDY_DATA_MATCHMAKING: "communicate_study_data_matchmaking"
+        COMMUNICATE_STUDY_DATA_MATCHMAKING: "communicate_study_data_matchmaking",
     }
 
 }
@@ -105,6 +105,41 @@ const ECO_STATUSES = {
     WITHDRAWN: 'TP Withdrawn',
     DECLINED: 'TP Declined',
     DECLINED_OPTIONAL: 'TP Declined Optional'
+}
+
+const STUDY_ACTIONS = {
+
+    EDIT: "edit",
+    VIEW: "view",
+    FEEDBACK: "feedback",
+    RESULT: "result",
+    DATA: "data"
+
+}
+
+const STUDY_STATUSES = {
+
+    STATUS_APPROVED: 'approved',
+    STATUS_ACTIVE: 'active',
+    STATUS_WITHDRAWN: 'withdrawn',
+    STATUS_ON_HOLD: 'onHold',
+    STATUS_CLOSED: 'closed',
+    STATUS_COMPLETED: 'completed',
+
+    ACTION_RUN: "Run",
+    ACTION_WITHDRAW: "Withdraw",
+    ACTION_HOLD: "Hold",
+    ACTION_CLOSE: "Close",
+    ACTION_RESUME: "Resume",
+    ACTION_FINALISE: "Finalise",
+
+    LABEL_APPROVED: "Approved",
+    LABEL_ACTIVE: "Active",
+    LABEL_ON_HOLD: "On Hold",
+    LABEL_CLOSED: "Closed",
+    LABEL_COMPLETED: "Completed",
+    LABEL_WITHDRAWN: "Withdrawn",
+
 }
 
 const PATIENT_NOTIFICATIONS_TYPE = {
@@ -255,5 +290,7 @@ module.exports = {
     PATIENT_NOTIFICATIONS_TYPE,
     TP_ACTIONNEEDED_NOTIFICATIONS,
     QUESTION_TYPES,
-    RECRUITING_STAGES
+    RECRUITING_STAGES,
+    STUDY_STATUSES,
+    STUDY_ACTIONS
 };

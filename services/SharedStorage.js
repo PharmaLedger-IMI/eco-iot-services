@@ -67,7 +67,7 @@ class SharedStorage {
     deleteRecord = (tableName, key, callback) => this.letDatabaseInit()
         .then(() => this.mydb.deleteRecord(tableName, key, callback)).catch(this.logError);
 
-    deleteRecordAsync = async (tableName, key, record) => this.asyncMyFunction(this.deleteRecord, [tableName, key, record]);
+    deleteRecordAsync = async (tableName, key) => this.asyncMyFunction(this.deleteRecord, [tableName, key]);
 
     beginBatch = () => this.letDatabaseInit()
         .then(() => this.mydb.beginBatch()).catch(this.logError);

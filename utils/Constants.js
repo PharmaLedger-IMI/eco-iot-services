@@ -16,6 +16,7 @@ const MESSAGES = {
         SEND_HCO_DSU_TO_SPONSOR: 'send-hco-dsu-to-sponsor',
         SEND_REFRESH_CONSENTS_TO_PATIENT: 'send_refresh_consents',
         CLINICAL_SITE_QUESTIONNAIRE: 'clinical_site_questionnaire',
+        CLINICAL_SITE_QUESTIONNAIRE_UPDATE: 'clinical_site_questionnaire_update',
         UPDATE_STATUS: 'update_status',
         VISIT_SCHEDULED: 'schedule_visit',
         VISIT_CONFIRMED: 'visit_confirmed',
@@ -205,6 +206,10 @@ const PATIENT_NOTIFICATIONS_TYPE = {
     },
     CLINICAL_SITE_QUESTIONNAIRE: {
         notificationTitle :"Received a new questionnaire",
+        tagPage:"task-calendar",
+    },
+    CLINICAL_SITE_QUESTIONNAIRE_UPDATE: {
+        notificationTitle: "Questionnaire update",
         tagPage:"task-calendar",
     }
 }

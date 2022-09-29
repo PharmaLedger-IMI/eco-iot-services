@@ -17,6 +17,7 @@ const MESSAGES = {
         SEND_REFRESH_CONSENTS_TO_PATIENT: 'send_refresh_consents',
         CLINICAL_SITE_QUESTIONNAIRE: 'clinical_site_questionnaire',
         CLINICAL_SITE_QUESTIONNAIRE_UPDATE: 'clinical_site_questionnaire_update',
+        REFRESH_VISITS: 'refresh_visits',
         UPDATE_STATUS: 'update_status',
         VISIT_SCHEDULED: 'schedule_visit',
         VISIT_CONFIRMED: 'visit_confirmed',
@@ -154,6 +155,10 @@ const PATIENT_NOTIFICATIONS_TYPE = {
     },
     VISIT_UPDATE : {
         notificationTitle:"Visit updated",
+        tagPage:"task-calendar",
+    },
+    REFRESH_VISITS : {
+        notificationTitle:"All the Confirmed Visits & Procedures have been removed from calendar. HCP will send new appointment proposals",
         tagPage:"task-calendar",
     },
     NEW_FEEDBACK : {

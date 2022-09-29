@@ -43,6 +43,8 @@ class BaseRepository {
 
     findAllAsync = async () => this.StorageService.getAllRecordsAsync(this.tableName);
 
+    deleteRecordAsync = async (key) => this.StorageService.deleteRecordAsync(this.tableName, key);
+
     filter = (query, sort, limit, callback) => this.StorageService.filter(this.tableName, query, sort, limit, callback);
 
     filterAsync = async (query, sort, limit) => this.StorageService.filterAsync(this.tableName, query, sort, limit);

@@ -98,6 +98,8 @@ const MESSAGES = {
         REMOVE_PARTICIPANTS_FROM_STUDY: "remove_participants_from_study",
         REJECT_PARTICIPANTS_FROM_STUDY: "reject_participants_from_study",
         COMMUNICATE_STUDY_DATA_MATCHMAKING: "communicate_study_data_matchmaking",
+        GENERATE_ANONYMIZE_DATA: "generate_anonymize_data",
+        ANONYMIZED_DATA: "anonymized_data"
     }
 
 }

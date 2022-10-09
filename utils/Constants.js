@@ -282,6 +282,8 @@ const DATE_UTILS = {
         HourFormatPattern: "HH:mm",
         DateTimeFormatPattern: 'DD/MM/YYYY, HH:mm',
         YearMonthPattern:  'YYYY-MM',
+        DDMMYYYY:"DD/MM/YYYY",
+        YYYYMMDD:"YYYY-MM-DD"
     },
     DATE_LOCALE: 'en-UK',
 }

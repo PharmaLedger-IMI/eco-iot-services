@@ -255,6 +255,17 @@ const TRIAL_PARTICIPANT_STATUS = {
     IN_TREATMENT: 'In Treatment'
 }
 
+const PROGRESS_BAR_STATUSES = {
+    PLANNED: 'Planned',
+    SCREENED: 'Screened',
+    ENROLLED: 'Enrolled',
+    IN_TREATMENT: 'In Treatment',
+    COMPLETED: "Completed",
+    DISCONTINUED: "Discontinued",
+    SCREEN_FAILED: "Screen Failed",
+    WITHDRAWN: 'Withdrawn'
+}
+
 const TP_ACTIONNEEDED_NOTIFICATIONS = {
     SET_TP_NUMBER: 'tp-number-set',
     TP_VISIT_CONFIRMED: 'tp-visit-confirmed',
@@ -307,5 +318,6 @@ module.exports = {
     QUESTION_TYPES,
     RECRUITING_STAGES,
     STUDY_STATUSES,
-    STUDY_ACTIONS
+    STUDY_ACTIONS,
+    PROGRESS_BAR_STATUSES
 };

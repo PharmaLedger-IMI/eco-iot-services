@@ -262,7 +262,8 @@ const TP_ACTIONNEEDED_NOTIFICATIONS = {
     VISIT_CONFIRMED: 'visit-confirmed',
     TP_WITHDRAWN: 'TP Withdrawn',
     TP_DECLINED: 'TP Declined',
-    TP_DECLINED_OPTIONAL: 'TP Declined Optional'
+    TP_DECLINED_OPTIONAL: 'TP Declined Optional',
+    HCP_SIGNED: 'HCP SIGNED -no action required'
 }
 
 const QUESTION_TYPES = {

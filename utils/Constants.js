@@ -274,7 +274,8 @@ const TP_ACTIONNEEDED_NOTIFICATIONS = {
     TP_WITHDRAWN: 'TP Withdrawn',
     TP_DECLINED: 'TP Declined',
     TP_DECLINED_OPTIONAL: 'TP Declined Optional',
-    HCP_SIGNED: 'HCP SIGNED -no action required'
+    HCP_SIGNED: 'HCP SIGNED -no action required',
+    NO_ACTION_REQUIRED: "No action required"
 }
 
 const QUESTION_TYPES = {

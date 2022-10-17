@@ -261,9 +261,10 @@ const PROGRESS_BAR_STATUSES = {
     ENROLLED: 'Enrolled',
     IN_TREATMENT: 'In Treatment',
     COMPLETED: "Completed",
+    END_OF_TREATMENT: "End Of Treatment",
     DISCONTINUED: "Discontinued",
     SCREEN_FAILED: "Screen Failed",
-    WITHDRAWN: 'Withdrawn'
+    WITHDRAWN: 'Withdrawn',
 }
 
 const TP_ACTIONNEEDED_NOTIFICATIONS = {

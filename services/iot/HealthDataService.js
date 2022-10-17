@@ -25,8 +25,6 @@ class HealthDataService extends DSUService {
         this.updateEntity(data, callback);
     }
 
-    getSReadSSI = (pathPrefix, callback) => this.getEntityMountSSI(pathPrefix, callback);
-
 }
 
 module.exports = HealthDataService;

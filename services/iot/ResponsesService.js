@@ -18,8 +18,14 @@ class ResponsesService extends DSUService {
                     if (err) {
                         return callback(err);
                     }
-                    const responsesReadSSI = this.getSReadSSI(responsesIdentifier);
-                    callback(undefined, responsesReadSSI);
+
+                    this.getSReadSSI(responsesIdentifier, (err, responsesReadSSI)=>{
+                        if(err){
+                            return callback(err);
+                        }
+                        callback(undefined, responsesReadSSI);
+                    });
+
                 })
 
             });

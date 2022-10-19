@@ -21,8 +21,13 @@ class QuestionnaireService extends DSUService {
             if(err){
                 return callback(err);
             }
-            const sReadSSI = this.getSReadSSI(ssi);
-            callback(undefined, sReadSSI);
+            this.getSReadSSI(ssi, (err, sReadSSI) => {
+                if (err) {
+                    return callback(err);
+                }
+                callback(undefined, sReadSSI);
+            });
+
         });
     }
 }

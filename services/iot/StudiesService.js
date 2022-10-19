@@ -42,10 +42,14 @@ class StudiesService extends DSUService {
     }
 
     getDSUsReadSSI = (uid, callback) => {
-            this.getEntityMountSSI("studies",  uid, (err, KeySSI) => {
-                let SReadSSI = this.getSReadSSI(KeySSI)
-                callback(undefined, SReadSSI);
-            });
+        this.getEntityMountSSI("studies", uid, (err, keySSI) => {
+            this.getSReadSSI(keySSI, (err, sReadSSI) => {
+                if (err) {
+                    return callback(err);
+                }
+                callback(undefined, sReadSSI);
+            })
+        });
     }
 
 }

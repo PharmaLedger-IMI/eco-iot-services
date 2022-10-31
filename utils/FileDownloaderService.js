@@ -18,8 +18,8 @@ module.exports = class FileDownloaderService extends DSUService {
                 };
                 this.files.push(file);
 
-                await this._getFileBlob(file.path, file.filename);
-                resolve();
+                let buffer = await this._getFileBlob(file.path, file.filename);
+                resolve(buffer);
             } else resolve();
         });
     }
@@ -65,6 +65,6 @@ module.exports = class FileDownloaderService extends DSUService {
         const blob = new Blob([buffer]);
         file['rawBlob'] = blob;
         file['mimeType'] = blob.type;
-        return;
+        return buffer;
     }
 };

@@ -29,6 +29,18 @@ class JWTService {
         return verifyPresentationStatus;
     }
 
+    async createVCForIFC(siteDid, tpDid, claims) {
+        const {subjectClaims} = claims;
+        const jwtVcInstance = await this.createVerifiableCredential(tpDid, siteDid);
+
+        if (subjectClaims) {
+            await jwtVcInstance.embedSubjectClaimAsync("https://clinical-site-wallet.dev/ifcVC", "ifcVC", subjectClaims);
+        }
+
+        const encodedJWTVc = await jwtVcInstance.getEncodedJWTAsync();
+        return encodedJWTVc;
+    }
+
     async createVerifiableCredentialForAnonymousPatient(clinicalSiteDID, trialParticipantDID, claimsToEmbed) {
         const {subjectClaims, publicClaims} = claimsToEmbed;
         const jwtVcInstance = await this.createVerifiableCredential(clinicalSiteDID, trialParticipantDID);

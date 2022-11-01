@@ -7,7 +7,6 @@ const MESSAGES = {
         DELETE_TRIAL : 'delete-trial',
         UPDATE_ECONSENT : 'update-econsent',
         SITE_STATUS_CHANGED: 'site-status-change',
-        UPDATE_BASE_PROCEDURES: 'update-base-procedures',
         ADD_SITE : 'add-site',
         ADD_TRIAl_CONSENT : 'add-trial-consent',
         ADD_PATIENT_TO_TRIAL: 'add-to-trial',

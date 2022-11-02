@@ -13,6 +13,6 @@
     "url": "git+https://github.com/PharmaLedger-IMI/eco-iot-services.git"
   },
   "dependencies": {
-    "octopus": "git+http://github.com/privatesky/octopus.git"
+    "octopus": "git+http://github.com/opendsu/octopus.git"
   }
 }

@@ -1,4 +1,9 @@
-function getTrialConsent () {
+function getTrialConsent (entity) {
+
+    if(entity.hasOwnProperty("trialConsentName")){
+        return entity;
+    }
+
     return  {
         description: "A record of a healthcare consumer’s  choices, which permits or denies identified recipient(s) or recipient role(s) to perform one or more actions within a given policy context, for specific purposes and periods of time.",
         properties: {

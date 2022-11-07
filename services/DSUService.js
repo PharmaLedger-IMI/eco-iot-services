@@ -3,7 +3,8 @@ const storage = opendsu.loadApi('storage');
 const resolver = opendsu.loadAPI('resolver');
 const SharedStorage = require("../services/SharedStorage.js");
 const keySSISpace = opendsu.loadAPI('keyssi');
-
+const getObjectNameFromPath = require("../utils/dsusMapper.js");
+const {getHL7TransformationRegistry}  =  require("./HL7TransformationRegistry.js");
 class DSUService {
     PATH = '/';
 
@@ -11,6 +12,7 @@ class DSUService {
         this.DSUStorage = storage.getDSUStorage();
         this.storageService = SharedStorage.getSharedStorage(this.DSUStorage);
         this.PATH = path;
+        this.HL7TransformationRegistry = getHL7TransformationRegistry();
     }
 
     refreshDSU(ssi, callback) {
@@ -171,58 +173,75 @@ class DSUService {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
 
         const config = opendsu.loadAPI('config');
+        config.getEnv('hl7', (err, hl7Enabled) => {
 
-        config.getEnv('domain', (err, domain) => {
-            if (err || !domain) {
-                throw new Error('No domain was set up in the environment configuration file.');
+            if (hl7Enabled) {
+                const objectName = getObjectNameFromPath(path);
+                console.log("*******", objectName, "****");
+                if (this.HL7TransformationRegistry.transformationFnExists(objectName)) {
+                    let transformationMethods = this.HL7TransformationRegistry.getTransformationFn(objectName);
+                    let originalEntity = entity;
+                    for (let i = 0; i < transformationMethods.length; i++) {
+                        let tranformMethod = transformationMethods[i];
+                        originalEntity = tranformMethod(originalEntity);
+                    }
+                }
             }
 
-            const templateSSI = keySSISpace.createTemplateSeedSSI(domain);
-            resolver.createDSU(templateSSI, (err, dsuInstance) => {
-                if (err) {
-                    console.log(err);
-                    return callback(err);
+            config.getEnv('domain', (err, domain) => {
+                if (err || !domain) {
+                    throw new Error('No domain was set up in the environment configuration file.');
                 }
 
-                dsuInstance.getKeySSIAsString((err, seedSSI) => {
+                const templateSSI = keySSISpace.createTemplateSeedSSI(domain);
+                resolver.createDSU(templateSSI, (err, dsuInstance) => {
                     if (err) {
+                        console.log(err);
                         return callback(err);
                     }
 
-                    const keySSIObj = keySSISpace.parse(seedSSI);
-                    keySSIObj.getAnchorId((err, anchorId) => {
+                    dsuInstance.getKeySSIAsString((err, seedSSI) => {
                         if (err) {
                             return callback(err);
                         }
-                        dsuInstance.getKeySSIAsString('sread', (err, sreadSSI) => {
+
+                        const keySSIObj = keySSISpace.parse(seedSSI);
+                        keySSIObj.getAnchorId((err, anchorId) => {
                             if (err) {
                                 return callback(err);
                             }
-                            this.letDSUStorageInit().then(() => {
-                                this.DSUStorage.mount(path + '/' + anchorId, seedSSI, (err) => {
-                                    if (err) {
-                                        console.log(err);
-                                    }
-                                    entity.uid = anchorId;
-
-                                    this.updateEntity(entity, path, (err, entity) => {
+                            dsuInstance.getKeySSIAsString('sread', (err, sreadSSI) => {
+                                if (err) {
+                                    return callback(err);
+                                }
+                                this.letDSUStorageInit().then(() => {
+                                    this.DSUStorage.mount(path + '/' + anchorId, seedSSI, (err) => {
                                         if (err) {
-                                            return callback(err, entity);
+                                            console.log(err);
                                         }
+                                        entity.uid = anchorId;
 
-                                        entity.keySSI = seedSSI;
-                                        entity.sReadSSI = sreadSSI;
-                                        callback(undefined, entity);
+                                        this.updateEntity(entity, path, (err, entity) => {
+                                            if (err) {
+                                                return callback(err, entity);
+                                            }
+
+                                            entity.keySSI = seedSSI;
+                                            entity.sReadSSI = sreadSSI;
+                                            callback(undefined, entity);
+                                        });
                                     });
                                 });
                             });
+
                         });
 
                     });
-
                 });
             });
-        });
+
+
+        })
     }
 
     async saveEntityAsync(entity, path) {

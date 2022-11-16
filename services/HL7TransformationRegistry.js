@@ -27,8 +27,9 @@ let instance = null;
 const getHL7TransformationRegistry = () => {
     if (instance === null) {
         instance = new HL7TransformationRegistry();
-        instance.registerTransformation("consent",HL7Models.getTrialConsent);
-        instance.registerTransformation("consent",HL7Models.getSiteConsent);
+        instance.registerTransformation("consent",HL7Models.setHL7TrialConsent);
+        instance.registerTransformation("consent",HL7Models.setHL7SiteConsent);
+
     }
     return instance;
 };

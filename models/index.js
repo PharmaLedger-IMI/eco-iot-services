@@ -12,6 +12,8 @@ module.exports = {
     RelatedPersonModel: require("./HL7/RelatedPersonModel").getRelatedPersonModel(),
     ResearchStudyModel: require("./HL7/ResearchStudyModel").getResearchStudyModel(),
     ResearchSubjectModel: require("./HL7/ResearchSubjectModel").getResearchSubjectModel(),
-    getTrialConsent: require("./HL7/TrialConsent").getTrialConsent,
-    getSiteConsent: require("./HL7/SiteConsent").getSiteConsent
+    setHL7TrialConsent: require("./HL7/TrialConsentModel").setHL7TrialConsent,
+    setHL7SiteConsent: require("./HL7/SiteConsentModel").setHL7SiteConsent,
+    revertTrialConsent: require("./HL7/TrialConsentModel").revertTrialConsent,
+    revertSiteConsent: require("./HL7/SiteConsentModel").revertSiteConsent,
 };

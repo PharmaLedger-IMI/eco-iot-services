@@ -261,6 +261,7 @@ const PROGRESS_BAR_STATUSES = {
     IN_TREATMENT: 'In Treatment',
     COMPLETED: "Completed",
     END_OF_TREATMENT: "End Of Treatment",
+    UNAVAILABLE:"Unavailable",
     DISCONTINUED: "Discontinued",
     SCREEN_FAILED: "Screen Failed",
     WITHDRAWN: 'Withdrawn',

@@ -16,4 +16,8 @@ module.exports = {
     setHL7SiteConsent: require("./HL7/SiteConsentModel").setHL7SiteConsent,
     revertTrialConsent: require("./HL7/TrialConsentModel").revertTrialConsent,
     revertSiteConsent: require("./HL7/SiteConsentModel").revertSiteConsent,
+    setHL7TrialResearchStudy: require("./HL7/TrialModel.js").getTrialResearchStudy,
+    revertHL7TrialResearchStudy: require("./HL7/TrialModel.js").getStandardTrial,
+    setSiteHL7Organization: require("./HL7/ClinicalSiteModel.js").getSiteHL7Organization,
+    revertStandardClinicalSiteData: require("./HL7/ClinicalSiteModel.js").getStandardClinicalSiteData,
 };

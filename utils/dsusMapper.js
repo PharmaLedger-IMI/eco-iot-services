@@ -1,7 +1,7 @@
 const knownDSUsSubPaths = {
     "tp":["tp", "tps"],
     "ifc":["ifc","ifcs"],
-    "consent":["consent"]
+    "consent":["consent", "consents"]
 }
 
 let getObjectNameFromPath = (path)=>{

@@ -86,12 +86,13 @@ function setHL7TrialConsent (entity) {
 function revertTrialConsent (entity) {
 
     if((entity.properties) && entity.properties.resourceType.const === "Trial Consent"){
+        console.log("I am in revert trial")
         return  {
             id: entity.properties.identifier.value,
             type: entity.properties.category.items.type,
             versions: entity.properties.extension.items.versions,
             name: entity.properties.meta.name,
-            uid: entity.uid
+            uid: entity.uid,
         }
     }
     else return entity;

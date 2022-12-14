@@ -109,6 +109,7 @@ function setHL7SiteConsent (entity) {
 function revertSiteConsent (entity) {
 
     if((entity.properties) && entity.properties.resourceType.const === "Site Consent"){
+        console.log("I am in revert site")
         return  {
             file: entity.properties.sourceAttachment.file,
             name: entity.properties.meta.name,
@@ -117,7 +118,7 @@ function revertSiteConsent (entity) {
             trialConsentVersion: entity.properties.extension.items.version,
             type: entity.properties.category.items.type,
             uid: entity.uid,
-            versions: entity.properties.extension.items.versions
+            versions: entity.properties.extension.items.versions,
         }
     }
     else return entity;

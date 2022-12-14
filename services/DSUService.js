@@ -5,6 +5,8 @@ const SharedStorage = require("../services/SharedStorage.js");
 const keySSISpace = opendsu.loadAPI('keyssi');
 const getObjectNameFromPath = require("../utils/dsusMapper.js");
 const {getHL7TransformationRegistry}  =  require("./HL7TransformationRegistry.js");
+const {getHL7ReversionRegistry}  =  require("./HL7ReverterRegistry.js");
+
 class DSUService {
     PATH = '/';
 
@@ -13,6 +15,7 @@ class DSUService {
         this.storageService = SharedStorage.getSharedStorage(this.DSUStorage);
         this.PATH = path;
         this.HL7TransformationRegistry = getHL7TransformationRegistry();
+        this.HL7ReversionRegistry = getHL7ReversionRegistry();
     }
 
     refreshDSU(ssi, callback) {
@@ -63,7 +66,36 @@ class DSUService {
                 if (err) {
                     return callback(err, undefined);
                 }
+
+
+
                 let entity = JSON.parse(content.toString());
+                //////////////////////////////////////////
+
+
+                const config = opendsu.loadAPI('config');
+                config.getEnv('hl7', (err, hl7) => {
+                    if (hl7) {
+                        console.log(entity);
+                        let datatype = getObjectNameFromPath(this.PATH);
+                        console.log("*******", datatype, "****");
+                        if (this.HL7ReversionRegistry.reversionFnExists(datatype)) {
+                            console.log("Reverting back..........");
+                            let reversionMethods = this.HL7ReversionRegistry.getReversionFn(datatype);
+                            let entityToChange = entity;
+                            for (let i = 0; i < reversionMethods.length; i++) {
+                                let revertMethod = reversionMethods[i];
+                                entityToChange = revertMethod(entityToChange);
+                            }
+                            console.log(entityToChange);
+                            callback(undefined, entityToChange);
+                        }
+                    }
+                })
+
+
+
+
                 callback(undefined, entity);
             });
         });
@@ -115,6 +147,7 @@ class DSUService {
         return this.asyncMyFunction(this.getEntities, [...arguments]);
     }
 
+
     getEntity(uid, path, callback) {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
         this.letDSUStorageInit().then(() => {
@@ -122,8 +155,29 @@ class DSUService {
                 if (err) {
                     return callback(err, undefined);
                 }
+                //////////////////////////////////////
                 let textDecoder = new TextDecoder('utf-8');
-                callback(undefined, JSON.parse(textDecoder.decode(content)));
+                let decoded_entity = JSON.parse(textDecoder.decode(content))
+
+                const config = opendsu.loadAPI('config');
+                config.getEnv('hl7', (err, hl7) => {
+                    if (hl7) {
+                        const datatype = getObjectNameFromPath(path);
+                        console.log("*******", datatype, "****");
+                        if (this.HL7ReversionRegistry.reversionFnExists(datatype)) {
+                            console.log("Reverting back..........");
+                            let reversionMethods = this.HL7ReversionRegistry.getReversionFn(datatype);
+                            let entityToChange = decoded_entity;
+                            for (let i = 0; i < reversionMethods.length; i++) {
+                                let revertMethod = reversionMethods[i];
+                                entityToChange = revertMethod(entityToChange);
+                            }
+                            console.log(entityToChange);
+                            callback(undefined, entityToChange);
+                        }
+                    }
+                })
+                callback(undefined, decoded_entity);
             });
         });
     }
@@ -172,6 +226,7 @@ class DSUService {
     saveEntity(entity, path, callback) {
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
 
+        const originalEntity = entity;
         const config = opendsu.loadAPI('config');
         config.getEnv('hl7', (err, hl7Enabled) => {
 
@@ -180,11 +235,13 @@ class DSUService {
                 console.log("*******", objectName, "****");
                 if (this.HL7TransformationRegistry.transformationFnExists(objectName)) {
                     let transformationMethods = this.HL7TransformationRegistry.getTransformationFn(objectName);
-                    let originalEntity = entity;
+                    let entityToChange = entity;
                     for (let i = 0; i < transformationMethods.length; i++) {
                         let tranformMethod = transformationMethods[i];
-                        originalEntity = tranformMethod(originalEntity);
+                        entityToChange = tranformMethod(entityToChange);
                     }
+                    console.log(entityToChange);
+                    entity = entityToChange;
                 }
             }
 
@@ -219,17 +276,39 @@ class DSUService {
                                         if (err) {
                                             console.log(err);
                                         }
-                                        entity.uid = anchorId;
 
-                                        this.updateEntity(entity, path, (err, entity) => {
+
+
+                                        const config = opendsu.loadAPI('config');
+
+                                        config.getEnv('hl7', (err, hl7Enabled) => {
+                                            let entityToChange = entity;
+                                            if (hl7Enabled) {
+                                                const datatype = getObjectNameFromPath(path);
+                                                console.log("*******", datatype, "****");
+                                                if (this.HL7ReversionRegistry.reversionFnExists(datatype)) {
+                                                    console.log("Save entity Reverting back..........");
+                                                    let reversionMethods = this.HL7ReversionRegistry.getReversionFn(datatype);
+
+                                                    for (let i = 0; i < reversionMethods.length; i++) {
+                                                        let revertMethod = reversionMethods[i];
+                                                        entityToChange = revertMethod(entityToChange);
+                                                    }
+                                                    console.log(entityToChange);
+                                                    //callback(undefined, entityToChange);
+                                                }
+                                            }
+
+                                            entityToChange.uid = anchorId;
+                                        this.updateEntity(entityToChange, path, (err, entity) => {
                                             if (err) {
                                                 return callback(err, entity);
                                             }
-
                                             entity.keySSI = seedSSI;
                                             entity.sReadSSI = sreadSSI;
                                             callback(undefined, entity);
                                         });
+                                        })
                                     });
                                 });
                             });
@@ -251,12 +330,52 @@ class DSUService {
     updateEntity(entity, path, callback) {
         entity.volatile = undefined;
         [path, callback] = this.swapParamsIfPathIsMissing(path, callback);
+        const originalEntity = entity;
+        const config = opendsu.loadAPI('config');
+        config.getEnv('hl7', (err, hl7Enabled) => {
+            if (hl7Enabled) {
+                const objectName = getObjectNameFromPath(path);
+                console.log("*******", objectName, "****");
+                if (this.HL7TransformationRegistry.transformationFnExists(objectName)) {
+                    let transformationMethods = this.HL7TransformationRegistry.getTransformationFn(objectName);
+                    let entityToChange = entity;
+                    for (let i = 0; i < transformationMethods.length; i++) {
+                        let tranformMethod = transformationMethods[i];
+                        entityToChange = tranformMethod(entityToChange);
+                    }
+                    console.log(entityToChange);
+                    entity = entityToChange;
+                }
+            }
+        })
+
         this.letDSUStorageInit().then(() => {
             this.DSUStorage.setObject(this._getDsuStoragePath(entity.uid, path), entity, (err) => {
                 if (err) {
                     return callback(err, undefined);
                 }
+
+                const config = opendsu.loadAPI('config');
+                config.getEnv('hl7', (err, hl7) => {
+                    if (hl7) {
+                        const datatype = getObjectNameFromPath(path);
+                        console.log("*******", datatype, "****");
+                        if (this.HL7ReversionRegistry.reversionFnExists(datatype)) {
+                            console.log("Update entity Reverting back..........");
+                            let reversionMethods = this.HL7ReversionRegistry.getReversionFn(datatype);
+                            let entityToChange = entity;
+                            for (let i = 0; i < reversionMethods.length; i++) {
+                                let revertMethod = reversionMethods[i];
+                                entityToChange = revertMethod(entityToChange);
+                            }
+                            console.log(entityToChange);
+                            callback(undefined, entityToChange);
+                        }
+                    }
+                });
+
                 callback(undefined, entity);
+
             });
         });
     }

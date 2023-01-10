@@ -228,13 +228,16 @@ const HCO_NOTIFICATIONS_TYPE = {
         notificationTitle:"Withdraws",
     },
     CONSENT_UPDATES : {
-        notificationTitle:"Consent Updates",
+        notificationTitle:"Inform Consents Updates",
     },
     MILESTONES_REMINDERS : {
         notificationTitle:"Milestones Reminders",
     },
     TRIAL_SUBJECT_QUESTIONNAIRE_RESPONSES : {
-        notificationTitle: "Patient questionnaire response",
+        notificationTitle: "Patient Questionnaire Responses",
+    },
+    PATIENT_HEALTH_DATA : {
+        notificationTitle: "Patient Health Data",
     },
 }
 

@@ -50,7 +50,6 @@ class CommunicationService {
             let didService = DidService.getDidServiceInstance();
             didService.getEnvironmentData().then(async (envData) => {
                 this.environmentData = envData;
-                console.log(envData);
                 const didData = DidService.getDidData(this.environmentData.did);
 
                 try {
